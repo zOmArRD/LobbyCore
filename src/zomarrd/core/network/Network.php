@@ -17,18 +17,27 @@ use zomarrd\core\LobbyCore;
 
 final class Network
 {
-    private function plugin(): LobbyCore
+    /**
+     * @return LobbyCore
+     */
+    public function getPlugin(): LobbyCore
     {
         return LobbyCore::getInstance();
     }
 
+    /**
+     * @return PluginManager
+     */
     public function getPluginManager(): PluginManager
     {
-        return $this->plugin()->getServer()->getPluginManager();
+        return $this->getPlugin()->getServer()->getPluginManager();
     }
 
+    /**
+     * @return TaskScheduler
+     */
     public function getTaskManager(): TaskScheduler
     {
-        return $this->plugin()->getScheduler();
+        return $this->getPlugin()->getScheduler();
     }
 }
