@@ -1,0 +1,26 @@
+---
+# Spawn Data:
+# -> Here you can change the values
+#    so that the players appear wherever you want.
+#
+# -> Example:
+#
+#spawn.data:
+#  is.enabled: true | Must be (bool) (TRUE TO ACTIVATE THE CONFIGURATION)
+#  world.name: "WorldHere" | Must be (string) (Recommended to use "" to avoid certain failures)
+#  pos.x: 80 | It can be (float) or (int)
+#  pos.y: 45 | It can be (float) or (int)
+#  pos.z: 150.6684 | It can be (float) or (int)
+#  player.yaw: 98.5648486548 | It can be (float) or (int)
+#  player.pitch: -8.546484848 | It can be (float) or (int)
+#  world.void.minimum: 45 | Must be (int)
+spawn.data:
+  is.enabled: false
+  world.name: null
+  pos.x: null
+  pos.y: null
+  pos.z: null
+  player.yaw: null
+  player.pitch: null
+  world.void.minimum: null
+...
