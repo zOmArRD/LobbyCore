@@ -14,6 +14,7 @@ namespace zomarrd\core;
 use pocketmine\network\mcpe\RakLibInterface;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
+use zomarrd\core\events\EventsManager;
 
 final class LobbyCore extends PluginBase
 {
@@ -31,6 +32,10 @@ final class LobbyCore extends PluginBase
 
     public function onEnable(): void
     {
+        /* It is in charge of registering the plugin events. */
+        new EventsManager();
+
+        /* Avoid some network crashes when transferring packets */
         foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) {
             if ($interface instanceof RakLibInterface) {
                 $interface->setPacketLimit(PHP_INT_MAX);
