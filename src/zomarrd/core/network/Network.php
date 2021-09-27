@@ -25,6 +25,11 @@ final class Network
         return LobbyCore::getInstance();
     }
 
+    public function getServerPM()
+    {
+        return $this->getPlugin()->getServer();
+    }
+
     /**
      * @return PluginManager
      */

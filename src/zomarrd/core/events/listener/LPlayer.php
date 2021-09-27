@@ -13,9 +13,11 @@ namespace zomarrd\core\events\listener;
 
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\EmotePacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use ReflectionClass;
 use ReflectionException;
+use zomarrd\core\network\Network;
 
 final class LPlayer implements Listener
 {
@@ -48,6 +50,10 @@ final class LPlayer implements Listener
                     $property->setValue($pl, $pk->clientData["Waterdog_XUID"]);
                     $pk->xuid = $pk->clientData["Waterdog_XUID"];
                 }
+                break;
+            case $pk instanceof EmotePacket:
+                $emoteId = $pk->getEmoteId();
+                (new Network())->getServerPM()->broadcastPacket($pl->getViewers(), EmotePacket::create($pl->getId(), $emoteId, 1 << 0));
                 break;
         }
     }
