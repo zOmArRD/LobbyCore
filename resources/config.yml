@@ -1,0 +1,5 @@
+---
+# For the colors, please read the documentation on TextUtils. {todo: change this}
+general:
+  prefix: "{bold}{gold}Practice {gray}»{reset} "
+...
