@@ -15,6 +15,12 @@ use pocketmine\network\mcpe\RakLibInterface;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
 use zomarrd\core\events\EventsManager;
+use zomarrd\core\modules\mysql\AsyncQueue;
+use zomarrd\core\modules\mysql\query\InsertQuery;
+use zomarrd\core\modules\mysql\query\UpdateRowQuery;
+use zomarrd\core\network\Network;
+use zomarrd\core\network\server\ServerManager;
+use const zOmArRD\PREFIX;
 
 final class LobbyCore extends PluginBase
 {
@@ -28,6 +34,9 @@ final class LobbyCore extends PluginBase
     {
         self::setInstance($this);
         self::setLogger($this->getLogger());
+        $this->checkDb();
+        $this->getNetwork()->getResourceManager()->init();
+        $this->getNetwork()->getServerManager()->init();
     }
 
     public function onEnable(): void
@@ -41,6 +50,11 @@ final class LobbyCore extends PluginBase
                 $interface->setPacketLimit(PHP_INT_MAX);
             }
         }
+    }
+
+    public function onDisable()
+    {
+        AsyncQueue::submitQuery(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "ServerName", $this->getNetwork()->getServerManager()->getCurrentServer()->getName(), "servers"));
     }
 
     /**
@@ -65,5 +79,19 @@ final class LobbyCore extends PluginBase
     public static function setLogger(PluginLogger $logger): void
     {
         self::$logger = $logger;
+    }
+
+    /**
+     * @return Network
+     */
+    public function getNetwork(): Network
+    {
+        return new Network();
+    }
+
+    private function checkDb(): void
+    {
+        self::$logger->info(PREFIX . "Checking the database");
+        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(ServerName VARCHAR(50) UNIQUE, Players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
     }
 }

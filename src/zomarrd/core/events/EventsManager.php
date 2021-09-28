@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace zomarrd\core\events;
 
 use zomarrd\core\events\listener\LPlayer;
+use zomarrd\core\LobbyCore;
+use const zOmArRD\PREFIX;
 
 final class EventsManager extends Events
 {
@@ -28,6 +30,7 @@ final class EventsManager extends Events
     {
         foreach ([new LPlayer()] as $listener) {
             $this->register($listener);
+            LobbyCore::$logger->info(PREFIX . "Recording the events...");
         }
     }
 }

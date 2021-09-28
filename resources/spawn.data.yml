@@ -16,7 +16,7 @@
 #  world.void.minimum: 45 | Must be (int)
 spawn.data:
   is.enabled: false
-  world.name: null
+  world.name: "world"
   pos.x: null
   pos.y: null
   pos.z: null
