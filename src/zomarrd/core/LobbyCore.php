@@ -34,8 +34,8 @@ final class LobbyCore extends PluginBase
     {
         self::setInstance($this);
         self::setLogger($this->getLogger());
-        $this->checkDb();
         $this->getNetwork()->getResourceManager()->init();
+        $this->checkDb();
         $this->getNetwork()->getServerManager()->init();
     }
 
@@ -93,5 +93,7 @@ final class LobbyCore extends PluginBase
     {
         self::$logger->info(PREFIX . "Checking the database");
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(ServerName VARCHAR(50) UNIQUE, Players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
+        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS settings(player VARCHAR(50) UNIQUE, language TEXT, scoreboard SMALLINT DEFAULT 1);"));
+
     }
 }

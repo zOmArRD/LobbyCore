@@ -14,6 +14,7 @@ namespace zomarrd\core\network\data;
 use pocketmine\level\Level;
 use pocketmine\utils\Config;
 use zomarrd\core\LobbyCore;
+use zomarrd\core\modules\lang\LangManager;
 use zomarrd\core\network\Network;
 use const zOmArRD\PREFIX;
 use const zOmArRD\Spawn_Data;
@@ -53,6 +54,15 @@ final class ResourcesManager
             }
             $this->getNetwork()->getServerPM()->getLevelByName($level)->setTime(Level::TIME_DAY);
             $this->getNetwork()->getServerPM()->getLevelByName($level)->stopTime();
+        }
+
+        LangManager::$config = $this->getArchive($configYml);
+
+        foreach (LangManager::$config->get("languages") as $language) {
+            $iso = $language["ISOCode"];
+            $this->getNetwork()->getPlugin()->saveResource("lang/$iso.yml");
+            LangManager::$lang[$iso] = new Config($this->getNetwork()->getPlugin()->getDataFolder() . "lang/$iso.yml");
+            LobbyCore::$logger->info(PREFIX . "Lang $iso ". $this->getNetwork()->getTextUtils()->uDecode("0:&%S(&)E96X@;&]A9&5D(0```"));
         }
 
         LobbyCore::$logger->info(PREFIX . "§a" . "Variable values loaded correctly.");

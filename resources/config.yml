@@ -14,4 +14,11 @@ database:
 #  password: $greekdatabase22
 #  host: 54.39.130.17
 #  database: greek_network
+
+# Array with available languages.
+# If you want to add any other, you must also add the strings in the lang folder
+languages:
+  - ISOCode: "eng"
+    name: "English"
+    icon: "https://cdn.countryflags.com/thumbs/united-states-of-america/flag-800.png"
 ...

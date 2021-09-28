@@ -1,0 +1,2 @@
+strings:
+  message.error: "{red}An error has ocurred"
