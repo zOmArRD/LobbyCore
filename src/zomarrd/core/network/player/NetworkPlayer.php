@@ -11,11 +11,21 @@ declare(strict_types=1);
 
 namespace zomarrd\core\network\player;
 
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use zomarrd\core\modules\lang\LangManager;
+use zomarrd\core\network\Network;
 
 final class NetworkPlayer extends Player
 {
+    /**
+     * @return Network
+     */
+    public function getNetwork(): Network
+    {
+        return new Network();
+    }
+
     /** @var LangManager */
     public LangManager $langSession;
 
@@ -35,5 +45,21 @@ final class NetworkPlayer extends Player
     public function getLangSession(): LangManager
     {
         return $this->langSession;
+    }
+
+    /**
+     * @param string $idString
+     *
+     * @return string
+     */
+    public function getLangTranslated(string $idString): string
+    {
+        $session = $this->getLangSession();
+        return $this->getNetwork()->getTextUtils()->replaceColor($session->getString($idString));
+    }
+
+    public function handleLevelSoundEvent(LevelSoundEventPacket $packet): bool
+    {
+        return true;
     }
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace zomarrd\core\modules\lang;
 
 use pocketmine\utils\Config;
+use zomarrd\core\modules\form\lib\SimpleForm;
 use zomarrd\core\modules\mysql\AsyncQueue;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\network\Network;
@@ -111,5 +112,17 @@ final class LangManager
     public function getNetwork(): Network
     {
         return new Network();
+    }
+
+    public function showForm(): void
+    {
+        $player = $this->getPlayer();
+        $form = new SimpleForm(function (NetworkPlayer $player, $data) {
+            if (isset($data)) {
+
+            }
+        });
+
+        $form->setTitle("");
     }
 }
