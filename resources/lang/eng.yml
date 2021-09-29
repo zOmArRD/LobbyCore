@@ -1,2 +1,26 @@
+################################
+# This was written by zOmArRD  #
+# For Greek Network MC:Bedrock #
+################################
+---
 strings:
-  message.error: "{red}An error has ocurred"
+  message.error: "{red}An error has occurred"
+  message.noperms: "{red}You don't have permission for this!"
+
+  # Global Forms Strings
+  form.button.close: "{red}Close"
+  form.button.back: "{gray}<< Back"
+  form.button.join: "{gray}Click to join"
+  form.button.enable: "{green}Enable"
+  form.button.disable: "{red}Disable"
+  form.button.locked: "{red}Locked"
+  form.button.unlocked: "{green}UnLocked"
+
+  # Lang Selector Strings
+  form.title.langselector: "Choose your language:"
+  message.langselector.setlanguage: "{green}Your language is currently set to English."
+
+  # Scoreboard Setting Strings
+  form.title.scoreboard: "Scoreboard Settings"
+  message.scoreboard.updated: "{green}Your Scoreboard settings have been updated."
+...

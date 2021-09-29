@@ -1,3 +1,8 @@
+################################
+# This was written by zOmArRD  #
+# For Greek Network MC:Bedrock #
+################################
+---
 current.server: "Lobby-1"
 
 # Example:
@@ -48,3 +53,4 @@ ffa.modes:
     Icon: "textures/items/fish_clownfish_raw"
 #  - Kit: ""
 #    Icon: "textures/items/"
+...
