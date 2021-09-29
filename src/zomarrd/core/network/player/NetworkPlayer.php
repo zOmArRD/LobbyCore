@@ -11,10 +11,20 @@ declare(strict_types=1);
 
 namespace zomarrd\core\network\player;
 
+use pocketmine\item\Item;
+use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\TransferPacket;
+use pocketmine\network\mcpe\protocol\types\GameMode;
 use pocketmine\Player;
+use zomarrd\core\items\ItemsManager;
 use zomarrd\core\modules\lang\LangManager;
 use zomarrd\core\network\Network;
+use zomarrd\core\network\scoreboard\Scoreboard;
+use zomarrd\core\network\server\ServerManager;
+use zomarrd\core\network\utils\TextUtils;
+use const zOmArRD\PREFIX;
+use const zOmArRD\Spawn_Data;
 
 final class NetworkPlayer extends Player
 {
@@ -61,5 +71,87 @@ final class NetworkPlayer extends Player
     public function handleLevelSoundEvent(LevelSoundEventPacket $packet): bool
     {
         return true;
+    }
+
+    /** @var Scoreboard */
+    public Scoreboard $scoreboardSession;
+
+    public function setScoreboardSession(): void
+    {
+        $this->scoreboardSession = new Scoreboard($this);
+    }
+
+    /**
+     * @return Scoreboard
+     */
+    public function getScoreboardSession(): Scoreboard
+    {
+        return $this->scoreboardSession;
+    }
+
+    public function setItem(int $index, Item $item): void
+    {
+        $pi = $this->getInventory();
+        if (isset($pi)) {
+            $pi->setItem($index, $item);
+        }
+    }
+
+    public function setLobbyItems(): void
+    {
+        $inventory = $this->getInventory();
+        if (isset($inventory)) {
+            $inventory->clearAll();
+
+            foreach (["item.navigator" => 4] as $item => $index) {
+                $this->setItem($index, ItemsManager::get($item, $this));
+            }
+        }
+    }
+
+    public function teleportToLobby(): void
+    {
+        $this->setLobbyItems();
+        $this->setGamemode(GameMode::ADVENTURE);
+        $this->setHealth(20);
+        $this->setFood(20);
+
+        if (Spawn_Data['is.enabled']) {
+            $spawn = Spawn_Data;
+            $yaw = $spawn['player.yaw'] !== null ? $spawn['player.yaw'] : $this->getYaw();
+            $pitch = $spawn['player.pitch'] !== null ? $spawn['player.pitch'] : $this->getYaw();
+            $this->teleport(new Position($spawn['pos.x'], $spawn['pos.y'], $spawn['pos.z'], $this->getNetwork()->getServerPM()->getLevelByName($spawn['world.name'])), $yaw, $pitch);
+        }
+    }
+
+    public function transferServer(string $target): void
+    {
+        $servers = $this->getNetwork()->getServerManager()->getServers();
+        if (count($servers) <= 0) {
+            $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}We could not connect to the servers, please try again!"));
+            return;
+        }
+
+        foreach ($servers as $server) {
+            if ($server->getName() == $target) {
+                if ($server->isOnline()) {
+                    if (!$server->isWhitelisted()) {
+                        $this->sendMessage(PREFIX . TextUtils::replaceColor("{green}Connecting to the server..."));
+                        $pk = new TransferPacket();
+                        $pk->address = $target;
+                        $this->directDataPacket($pk);
+                    } else {
+                        $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
+                        return;
+                    }
+                } else {
+                    $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is offline!"));
+                    return;
+                }
+            } else {
+                $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
+                return;
+            }
+        }
     }
 }

@@ -23,4 +23,11 @@ strings:
   # Scoreboard Setting Strings
   form.title.scoreboard: "Scoreboard Settings"
   message.scoreboard.updated: "{green}Your Scoreboard settings have been updated."
+
+  # Items name
+  item.navigator: "{reset}{gold}{bold}Server Selector {reset}{gray}(use)"
+
+  # Navigator Form
+  form.title.navigator: "{bold}{gray}» {gold}Greek {white}Network {gray}«"
+  form.content.navigator: "{yellow}What server do you want to go to, {gold}{player.get.name}{yellow}?"
 ...

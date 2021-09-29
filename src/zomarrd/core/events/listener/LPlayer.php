@@ -101,6 +101,8 @@ final class LPlayer implements Listener
 
         $pn = $player->getName();
         $player->setLangSession();
+        $player->setScoreboardSession();
+        /*TODO*/
 
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM settings WHERE player='$pn';"), function ($result) use ($pn) {
             $lang = "eng";
@@ -139,7 +141,7 @@ final class LPlayer implements Listener
         $pn = $player->getName();
 
         if ($player->hasPermission("lobby.fly")) $player->setAllowFlight(true);
-        /*TODO: Funcion para mover el jugador al lobby*/
+        $player->teleportToLobby();
 
         if (isset($this->login[$pn])) {
             unset($this->login[$pn]);
@@ -158,7 +160,6 @@ final class LPlayer implements Listener
     }
 
     /**
-     * @todo check if the player falls into the void.
      * @param PlayerMoveEvent $ev
      */
     public function onPlayerMove(PlayerMoveEvent $ev): void

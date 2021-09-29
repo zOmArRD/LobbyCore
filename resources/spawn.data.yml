@@ -19,12 +19,12 @@
 #  player.pitch: -8.546484848 | It can be (float) or (int)
 #  world.void.minimum: 45 | Must be (int)
 spawn.data:
-  is.enabled: false
+  is.enabled: true
   world.name: "world"
-  pos.x: null
-  pos.y: null
-  pos.z: null
-  player.yaw: null
-  player.pitch: null
-  world.void.minimum: null
+  pos.x: 55.518
+  pos.y: 58.0745
+  pos.z: 55.5023
+  player.yaw: 180.21612548828125
+  player.pitch: 2.28924560546875
+  world.void.minimum: 20
 ...

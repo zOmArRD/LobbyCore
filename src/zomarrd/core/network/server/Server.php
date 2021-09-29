@@ -49,7 +49,7 @@ class Server
            $row = $rows[0];
            if ($row !== null) {
                $this->setIsOnline((bool)$row["isOnline"]);
-               $this->setPlayers((int)$row["players"]);
+               $this->setPlayers((int)$row["Players"]);
                $this->setIsWhitelisted((bool)$row["isWhitelisted"]);
            } else {
                $this->setIsOnline((bool)0);

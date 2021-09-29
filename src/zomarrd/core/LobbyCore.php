@@ -20,6 +20,7 @@ use zomarrd\core\modules\mysql\query\InsertQuery;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\server\ServerManager;
+use zomarrd\core\task\TaskManager;
 use const zOmArRD\PREFIX;
 
 final class LobbyCore extends PluginBase
@@ -44,6 +45,9 @@ final class LobbyCore extends PluginBase
         /* It is in charge of registering the plugin events. */
         new EventsManager();
 
+        /* It is responsible for registering the tasks, and loading it. */
+        new TaskManager();
+
         /* Avoid some network crashes when transferring packets */
         foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) {
             if ($interface instanceof RakLibInterface) {
@@ -54,7 +58,7 @@ final class LobbyCore extends PluginBase
 
     public function onDisable()
     {
-        AsyncQueue::submitQuery(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "ServerName", $this->getNetwork()->getServerManager()->getCurrentServer()->getName(), "servers"));
+        AsyncQueue::submitQuery(new UpdateRowQuery(["isOnline" => 0, "Players" => 0], "ServerName", $this->getNetwork()->getServerManager()->getCurrentServer()->getName(), "servers"));
     }
 
     /**

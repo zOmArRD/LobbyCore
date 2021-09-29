@@ -48,13 +48,11 @@ final class ServerManager
         $currentServerName = $this->getConfig()->get('current.server');
         AsyncQueue::submitQuery(new RegisterServerQuery($currentServerName));
         LobbyCore::$logger->info(PREFIX . "Registering the server in the database");
-        sleep(1);
-
         $this->reloadServers();
         $this->getNetwork()->getTaskScheduler()->scheduleRepeatingTask(new ClosureTask(function () use ($currentServerName): void {
             $players = count(LobbyCore::getInstance()->getServer()->getOnlinePlayers());
             $isWhitelist = (LobbyCore::getInstance()->getServer()->hasWhitelist() ? 1 : 0);
-            AsyncQueue::submitQuery(new UpdateRowQuery(["players" => "$players", "isWhitelisted" => "$isWhitelist"], "ServerName", $currentServerName, "servers"));
+            AsyncQueue::submitQuery(new UpdateRowQuery(["Players" => "$players", "isWhitelisted" => "$isWhitelist"], "ServerName", $currentServerName, "servers"));
 
             foreach (self::getServers() as $server) {
                 $server->sync();
@@ -70,7 +68,7 @@ final class ServerManager
         $currentServerName = self::getConfig()->get('current.server');
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers"), function ($rows) use ($currentServerName) {
             foreach ($rows as $row) {
-                $server = new Server($row["ServerName"], (int)$row["players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
+                $server = new Server($row["ServerName"], (int)$row["Players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
                 if ($row["ServerName"] === $currentServerName) {
                     self::$currentServer = $server;
                     LobbyCore::$logger->info(PREFIX . "The server has been registered in the database.");
@@ -156,5 +154,40 @@ final class ServerManager
             }
         }
         return (int)$players;
+    }
+
+    /**
+     * Get all the players that are in the network.
+     * @return int
+     */
+    public function getNetworkPlayers(): int
+    {
+        $players = 0;
+        foreach (self::getServers() as $server) {
+            $players += $server->getPlayers();
+        }
+
+        return $players;
+    }
+
+    /**
+     * @param string $target
+     *
+     * @return string
+     */
+    public static function getServerPlayers(string $target): string
+    {
+        $servers = (new ServerManager)->getServers();
+
+        foreach ($servers as $server) {
+            if ($server->getName() == $target){
+                if ($server->isOnline) {
+                    return "§bPlayers: §f" . $server->getPlayers();
+                } else {
+                    return "§c" . "OFFLINE";
+                }
+            }
+        }
+        return "";
     }
 }

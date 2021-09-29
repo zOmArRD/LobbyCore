@@ -24,15 +24,12 @@ final class ResourcesManager
     /** @var string */
     public string $prefix, $serverName;
 
-    /** @var array */
-    private array $database, $spawn_options;
-
     public function init(): void
     {
         @mkdir($this->getNetwork()->getPlugin()->getDataFolder());
         $configYml = "config.yml";
 
-        foreach (['config.yml', 'spawn.data.yml', 'network.data.yml'] as $data) {
+        foreach (['config.yml', 'spawn.data.yml', 'network.data.yml', 'scoreboard.yml'] as $data) {
             $this->getNetwork()->getPlugin()->saveResource($data);
         }
 
@@ -40,12 +37,12 @@ final class ResourcesManager
         $spawnData = $this->getArchive("spawn.data.yml");
 
         $this->prefix = $this->getNetwork()->getTextUtils()->replaceColor($mainYml->get('prefix'));
-        $this->database = $mainYml->get("database");
-        $this->spawn_options = $spawnData->get("spawn.data");
+        $database = $mainYml->get("database");
+        $spawn_options = $spawnData->get("spawn.data");
 
         define("zOmArRD\PREFIX", $this->prefix);
-        define("zOmArRD\DB", $this->database);
-        define("zOmArRD\Spawn_Data", $this->spawn_options);
+        define("zOmArRD\DB", $database);
+        define("zOmArRD\Spawn_Data", $spawn_options);
 
         if (Spawn_Data['is.enabled']) {
             $level = Spawn_Data['world.name'];

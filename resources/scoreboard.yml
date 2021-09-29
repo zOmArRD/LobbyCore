@@ -1,0 +1,15 @@
+################################
+# This was written by zOmArRD  #
+# For Greek Network MC:Bedrock #
+################################
+---
+display.name: "§6§lGreek Network"
+
+eng:
+  - "{gray}──────────────"
+  - "{white} Server: {gold}{current.server}"
+  - "{white} Players: {gold}{network.get.players}"
+  - ""
+  - "{gray} play.greekmc.net"
+  - "{red}{gray}──────────────"
+...

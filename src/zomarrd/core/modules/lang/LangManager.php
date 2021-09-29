@@ -94,7 +94,7 @@ final class LangManager
     public function get(): string
     {
         $pn = $this->getPlayer()->getName();
-        return self::$users[$pn] ?? "en_ENG";
+        return self::$users[$pn] ?? "eng";
     }
 
     /**
