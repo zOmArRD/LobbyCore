@@ -27,9 +27,11 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\EmotePacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
 use ReflectionClass;
 use ReflectionException;
+use zomarrd\core\modules\floatingtext\FloatingTextManager;
 use zomarrd\core\modules\mysql\AsyncQueue;
 use zomarrd\core\modules\mysql\query\InsertQuery;
 use zomarrd\core\modules\mysql\query\SelectQuery;
@@ -147,6 +149,12 @@ final class LPlayer implements Listener
             unset($this->login[$pn]);
             $this->join[$pn] = 1;
         }
+
+        $this->getNetwork()->getTaskScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+            $player->showScreenAnimation(28);
+            $player->sendTitle("§l§6Greek §fNetwork", "§fwelcome §6{$player->getName()}", 20 ,30 , 20);
+            new FloatingTextManager($player);
+        }), 30);
     }
 
     public function onPlayerQuit(PlayerQuitEvent $ev): void

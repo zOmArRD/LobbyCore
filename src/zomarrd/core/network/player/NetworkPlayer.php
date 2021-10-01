@@ -14,6 +14,7 @@ namespace zomarrd\core\network\player;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\types\GameMode;
 use pocketmine\Player;
@@ -153,5 +154,12 @@ final class NetworkPlayer extends Player
                 return;
             }
         }
+    }
+
+    public function showScreenAnimation(int $effectId): void
+    {
+        $pk = new OnScreenTextureAnimationPacket();
+        $pk->effectId = $effectId;
+        $this->sendDataPacket($pk);
     }
 }

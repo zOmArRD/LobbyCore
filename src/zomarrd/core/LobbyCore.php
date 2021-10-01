@@ -14,10 +14,12 @@ namespace zomarrd\core;
 use pocketmine\network\mcpe\RakLibInterface;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
+use zomarrd\core\commands\Command;
 use zomarrd\core\events\EventsManager;
 use zomarrd\core\modules\mysql\AsyncQueue;
 use zomarrd\core\modules\mysql\query\InsertQuery;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
+use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\server\ServerManager;
 use zomarrd\core\task\TaskManager;
@@ -48,12 +50,20 @@ final class LobbyCore extends PluginBase
         /* It is responsible for registering the tasks, and loading it. */
         new TaskManager();
 
+        /* Register the plugin commands. */
+        new Command();
+
+        /* Register the custom entity of Human. */
+        Human::register();
+
         /* Avoid some network crashes when transferring packets */
         foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) {
             if ($interface instanceof RakLibInterface) {
                 $interface->setPacketLimit(PHP_INT_MAX);
             }
         }
+
+        self::$logger->info(PREFIX . "§a" . $this->getNetwork()->getTextUtils()->uDecode("-<&QU9VEN(&QO861E9````"));
     }
 
     public function onDisable()
@@ -98,6 +108,5 @@ final class LobbyCore extends PluginBase
         self::$logger->info(PREFIX . "Checking the database");
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(ServerName VARCHAR(50) UNIQUE, Players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS settings(player VARCHAR(50) UNIQUE, language TEXT, scoreboard SMALLINT DEFAULT 1);"));
-
     }
 }
