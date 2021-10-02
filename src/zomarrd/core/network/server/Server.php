@@ -16,13 +16,13 @@ use zomarrd\core\modules\mysql\query\SelectQuery;
 
 class Server
 {
-    /** @var string  */
+    /** @var string */
     public string $name;
 
-    /** @var int  */
+    /** @var int */
     public int $players;
 
-    /** @var bool  */
+    /** @var bool */
     public bool $isOnline, $isWhitelisted;
 
     /**
@@ -44,18 +44,19 @@ class Server
         $this->setIsWhitelisted($isWhitelisted);
     }
 
-    public function sync(): void{
+    public function sync(): void
+    {
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers WHERE ServerName='$this->name';"), function ($rows) {
-           $row = $rows[0];
-           if ($row !== null) {
-               $this->setIsOnline((bool)$row["isOnline"]);
-               $this->setPlayers((int)$row["Players"]);
-               $this->setIsWhitelisted((bool)$row["isWhitelisted"]);
-           } else {
-               $this->setIsOnline((bool)0);
-               $this->setPlayers(0);
-               $this->setIsWhitelisted((bool)0);
-           }
+            $row = $rows[0];
+            if ($row !== null) {
+                $this->setIsOnline((bool)$row["isOnline"]);
+                $this->setPlayers((int)$row["Players"]);
+                $this->setIsWhitelisted((bool)$row["isWhitelisted"]);
+            } else {
+                $this->setIsOnline((bool)0);
+                $this->setPlayers(0);
+                $this->setIsWhitelisted((bool)0);
+            }
         });
     }
 

@@ -21,8 +21,10 @@ use zomarrd\core\network\server\ServerManager;
 
 final class GlobalTask extends Task
 {
-
-    public function onRun(int $currentTick)
+    /**
+     * @param int $currentTick
+     */
+    public function onRun(int $currentTick): void
     {
         if ($currentTick % 30 === 0) {
             /* Scoreboard Section */
@@ -30,7 +32,6 @@ final class GlobalTask extends Task
                 if (!$player instanceof NetworkPlayer) return;
                 try {
                     $player->getScoreboardSession()->set();
-
                 } catch (Exception $ex) {
                     LobbyCore::$logger->error($ex->getMessage() . "\n" . $ex->getFile() . "\n" . $ex->getLine());
                 }
@@ -41,6 +42,9 @@ final class GlobalTask extends Task
         }
     }
 
+    /**
+     * @return Network
+     */
     public function getNetwork(): Network
     {
         return new Network();

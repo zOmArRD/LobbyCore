@@ -55,6 +55,12 @@ final class Scoreboard extends ScoreboardAPI
         }
     }
 
+    /**
+     * @param int    $line
+     * @param string $message
+     *
+     * @return string
+     */
     public function replaceData(int $line, string $message): string
     {
         if (empty($message)) return self::EMPTY_CACHE[$line] ?? "";
@@ -89,7 +95,6 @@ final class Scoreboard extends ScoreboardAPI
             "{network.get.players}" => $this->getNetwork()->getServerManager()->getNetworkPlayers(),
             "{current.server}" => $this->getNetwork()->getServerManager()->getCurrentServer()->getName()
         ];
-
 
         $keys = array_keys($data);
         $values = array_values($data);

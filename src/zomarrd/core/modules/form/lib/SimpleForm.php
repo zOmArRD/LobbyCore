@@ -13,13 +13,13 @@ namespace zomarrd\core\modules\form\lib;
 
 class SimpleForm extends Form
 {
-    /** @var int  */
+    /** @var int */
     const IMAGE_TYPE_PATH = 0, IMAGE_TYPE_URL = 1;
 
-    /** @var string  */
+    /** @var string */
     private string $content = "";
 
-    /** @var array  */
+    /** @var array */
     private array $labelMap = [];
 
     public function __construct(?callable $callable)

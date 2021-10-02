@@ -20,6 +20,12 @@ class UpdateRowQuery extends AsyncQuery
     /** @var string|null */
     public ?string $table, $updates, $conditionKey, $conditionValue;
 
+    /**
+     * @param array       $updates
+     * @param string      $conditionKey
+     * @param string      $conditionValue
+     * @param string|null $table
+     */
     public function __construct(array $updates, string $conditionKey, string $conditionValue, string $table = null)
     {
         $this->updates = serialize($updates);

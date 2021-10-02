@@ -89,6 +89,7 @@ final class LangManager
 
     /**
      * Gets the language of the player.
+     *
      * @return string
      */
     public function get(): string
@@ -99,6 +100,7 @@ final class LangManager
 
     /**
      * Gets the Strings of the language.
+     *
      * @param string $id
      *
      * @return string

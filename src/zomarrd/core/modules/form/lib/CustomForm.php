@@ -39,12 +39,10 @@ class CustomForm extends Form
         $this->data["title"] = $title;
     }
 
-
     public function getTitle(): string
     {
         return $this->data["title"];
     }
-
 
     public function addLabel(string $text, ?string $label = null): void
     {

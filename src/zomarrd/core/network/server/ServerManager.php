@@ -158,6 +158,7 @@ final class ServerManager
 
     /**
      * Get all the players that are in the network.
+     *
      * @return int
      */
     public function getNetworkPlayers(): int
@@ -180,7 +181,7 @@ final class ServerManager
         $servers = (new ServerManager)->getServers();
 
         foreach ($servers as $server) {
-            if ($server->getName() == $target){
+            if ($server->getName() == $target) {
                 if ($server->isOnline) {
                     return "§a" . "players: §f" . $server->getPlayers();
                 } else {

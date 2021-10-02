@@ -17,7 +17,7 @@ use pocketmine\Server;
 
 abstract class AsyncQuery extends AsyncTask
 {
-    /** @var string  */
+    /** @var string */
     public string $host, $user, $password, $database;
 
     public function onRun()
@@ -28,6 +28,7 @@ abstract class AsyncQuery extends AsyncTask
         }
         $mysqli->close();
     }
+
     /**
      * @param Server $server
      */

@@ -66,7 +66,7 @@ final class LobbyCore extends PluginBase
         self::$logger->info(PREFIX . "§a" . $this->getNetwork()->getTextUtils()->uDecode("-<&QU9VEN(&QO861E9````"));
     }
 
-    public function onDisable()
+    public function onDisable(): void
     {
         AsyncQueue::submitQuery(new UpdateRowQuery(["isOnline" => 0, "Players" => 0], "ServerName", $this->getNetwork()->getServerManager()->getCurrentServer()->getName(), "servers"));
     }

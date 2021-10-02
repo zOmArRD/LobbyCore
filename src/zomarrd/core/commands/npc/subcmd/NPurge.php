@@ -46,7 +46,7 @@ final class NPurge implements ISubCommand
                     }
                 }
             }
-        }elseif ($npcName == "hcf") {
+        } elseif ($npcName == "hcf") {
             Human::purge($npcName);
             $player->sendMessage(PREFIX . "§a" . "$npcName entity has been removed");
         } else {

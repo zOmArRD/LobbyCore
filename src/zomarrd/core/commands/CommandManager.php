@@ -47,5 +47,4 @@ abstract class CommandManager
             LobbyCore::$logger->info(PREFIX . "The command $prefix has been registered.");
         }
     }
-
 }

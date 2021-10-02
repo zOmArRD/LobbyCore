@@ -21,10 +21,10 @@ use zomarrd\core\network\player\NetworkPlayer;
 
 abstract class ScoreboardAPI
 {
-    /** @var NetworkPlayer  */
+    /** @var NetworkPlayer */
     public NetworkPlayer $player;
 
-    /** @var array  */
+    /** @var array */
     public array $lines = [], $objectiveName = [];
 
     /**

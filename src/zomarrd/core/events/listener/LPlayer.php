@@ -38,7 +38,6 @@ use zomarrd\core\modules\mysql\query\SelectQuery;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\session\Session;
-use zomarrd\core\network\utils\TextUtils;
 use const zOmArRD\Spawn_Data;
 
 final class LPlayer implements Listener
@@ -122,9 +121,9 @@ final class LPlayer implements Listener
 
         $pn = $player->getName();
 
-        AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM settings WHERE player='$pn';"), function ($result) use ($player, $pn){
+        AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM settings WHERE player='$pn';"), function ($result) use ($player, $pn) {
             if (sizeof($result) === 0) {
-                $player->kick(TextFormat::RED. "Join again to the server!");
+                $player->kick(TextFormat::RED . "Join again to the server!");
             }
             Session::$playerSettings[$pn] = $result[0];
             $player->getLangSession()->apply();
@@ -152,7 +151,7 @@ final class LPlayer implements Listener
 
         $this->getNetwork()->getTaskScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
             $player->showScreenAnimation(28);
-            $player->sendTitle("§l§6Greek §fNetwork", "§fwelcome §6{$player->getName()}", 20 ,30 , 20);
+            $player->sendTitle("§l§6Greek §fNetwork", "§fwelcome §6{$player->getName()}", 20, 30, 20);
             new FloatingTextManager($player);
         }), 30);
     }

@@ -19,8 +19,10 @@ use zomarrd\core\modules\mysql\AsyncQuery;
 
 class SelectQuery extends AsyncQuery
 {
+    /** @var mixed */
     public mixed $rows;
 
+    /** @var string */
     public string $query;
 
     public function __construct(string $sqlQuery)
@@ -28,6 +30,9 @@ class SelectQuery extends AsyncQuery
         $this->query = $sqlQuery;
     }
 
+    /**
+     * @param mysqli $mysqli
+     */
     public function query(mysqli $mysqli): void
     {
         $result = $mysqli->query($this->query);
@@ -44,6 +49,9 @@ class SelectQuery extends AsyncQuery
         }
     }
 
+    /**
+     * @param Server $server
+     */
     public function onCompletion(Server $server)
     {
         if ($this->rows === null) {

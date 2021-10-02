@@ -14,4 +14,7 @@ servers.availables: # config for duels available.
   - server.name: "HCF"
     image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353571950632/image1.png"
     image.type: 1
+  - server.name: "Practice"
+    image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353085407314/image0.png"
+    image.type: 1
 ...

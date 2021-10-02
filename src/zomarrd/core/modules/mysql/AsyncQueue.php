@@ -16,7 +16,7 @@ use const zOmArRD\DB;
 
 class AsyncQueue
 {
-    /** @var array  */
+    /** @var array */
     private static array $callbacks = [];
 
     /**

@@ -46,7 +46,7 @@ final class ResourcesManager
 
         if (Spawn_Data['is.enabled']) {
             $level = Spawn_Data['world.name'];
-            if (!$this->getNetwork()->getServerPM()->isLevelLoaded($level)){
+            if (!$this->getNetwork()->getServerPM()->isLevelLoaded($level)) {
                 $this->getNetwork()->getServerPM()->loadLevel($level);
             }
             $this->getNetwork()->getServerPM()->getLevelByName($level)->setTime(Level::TIME_DAY);
@@ -59,7 +59,7 @@ final class ResourcesManager
             $iso = $language["ISOCode"];
             $this->getNetwork()->getPlugin()->saveResource("lang/$iso.yml");
             LangManager::$lang[$iso] = new Config($this->getNetwork()->getPlugin()->getDataFolder() . "lang/$iso.yml");
-            LobbyCore::$logger->info(PREFIX . "Lang $iso ". $this->getNetwork()->getTextUtils()->uDecode("0:&%S(&)E96X@;&]A9&5D(0```"));
+            LobbyCore::$logger->info(PREFIX . "Lang $iso " . $this->getNetwork()->getTextUtils()->uDecode("0:&%S(&)E96X@;&]A9&5D(0```"));
         }
 
         LobbyCore::$logger->info(PREFIX . "§a" . "Variable values loaded correctly.");
@@ -76,7 +76,7 @@ final class ResourcesManager
      *
      * @return Config
      */
-    public function getArchive(string $archive, int $type = Config::YAML)
+    public function getArchive(string $archive, int $type = Config::YAML): Config
     {
         return new Config($this->getNetwork()->getPlugin()->getDataFolder() . $archive, $type);
     }
