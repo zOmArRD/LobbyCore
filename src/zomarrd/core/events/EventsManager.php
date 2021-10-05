@@ -30,7 +30,7 @@ final class EventsManager extends Events
      */
     public function loadEvents(): void
     {
-        foreach ([new LPlayer(), new InteractListener(), new NetworkListener()] as $listener) {
+        foreach ([new LPlayer(), new InteractListener()/*, new NetworkListener()*/] as $listener) {
             $this->register($listener);
         }
         LobbyCore::$logger->info(PREFIX . "Recording the events...");

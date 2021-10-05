@@ -70,12 +70,12 @@ final class LPlayer implements Listener
                 }
 
                 /* Check the XUID of the proxied player. */
-                if (isset($pk->clientData["Waterdog_XUID"])) {
+                /*if (isset($pk->clientData["Waterdog_XUID"])) {
                     $property = $class->getProperty("xuid");
                     $property->setAccessible(true);
                     $property->setValue($pl, $pk->clientData["Waterdog_XUID"]);
                     $pk->xuid = $pk->clientData["Waterdog_XUID"];
-                }
+                }*/
                 break;
             case $pk instanceof EmotePacket:
                 $emoteId = $pk->getEmoteId();
@@ -149,11 +149,9 @@ final class LPlayer implements Listener
             $this->join[$pn] = 1;
         }
 
-        $this->getNetwork()->getTaskScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
-            $player->showScreenAnimation(28);
-            $player->sendTitle("§l§6Greek §fNetwork", "§fwelcome §6{$player->getName()}", 20, 30, 20);
-            new FloatingTextManager($player);
-        }), 30);
+        $player->showScreenAnimation(28);
+        $player->sendTitle("§l§6Greek §fNetwork", "§fwelcome §6{$player->getName()}", 20, 30, 20);
+        new FloatingTextManager($player);
     }
 
     public function onPlayerQuit(PlayerQuitEvent $ev): void

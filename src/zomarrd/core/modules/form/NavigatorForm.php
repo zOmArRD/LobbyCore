@@ -34,6 +34,7 @@ final class NavigatorForm
                     case "close":
                         return;
                     case "HCF":
+                    case "Practice":
                         $player->transferServer($data);
                         break;
                 }

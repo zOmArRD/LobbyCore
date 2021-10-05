@@ -13,14 +13,19 @@ namespace zomarrd\core\events\listener;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 use zomarrd\core\items\ItemsManager;
 use zomarrd\core\modules\form\NavigatorForm;
+use zomarrd\core\modules\npc\entity\HumanEntity;
+use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\player\NetworkPlayer;
 
 final class InteractListener implements Listener
 {
     /** @var array */
-    private array $itemCountDown;
+    private array $itemCountDown, $hitNpc;
 
     public function legacyInteract(PlayerInteractEvent $ev): void
     {
@@ -41,6 +46,63 @@ final class InteractListener implements Listener
                     break;
             }
             $this->itemCountDown[$pn] = time();
+        }
+    }
+
+    public function interactHuman(DataPacketReceiveEvent $event)
+    {
+        $player = $event->getPlayer();
+        $pk = $event->getPacket();
+
+        if (!$player instanceof NetworkPlayer) return;
+        if (!$pk instanceof InventoryTransactionPacket) return;
+
+        /*if ($pk->trData instanceof UseItemTransactionData) {
+            switch ($pk->trData->getActionType()) {
+                case UseItemTransactionData::ACTION_CLICK_AIR:
+                case UseItemTransactionData::ACTION_CLICK_BLOCK:
+                    $item = $player->getInventory()->getItemInHand();
+                    $countdown = 1.5;
+                    if (!isset($this->itemCountDown[$player->getName()]) or time() - $this->itemCountDown[$player->getName()] >= $countdown) {
+                        switch (true) {
+                            case $item->equals($this->getServerSelectItem($player)):
+                                $this->showForm($player, "ServerSelector");
+                                break;
+                            case $item->equals($this->getCosmeticsItem($player)):
+                                $this->showForm($player, "CMenu");
+                                break;
+                            case $item->equals($this->getLobbyItem($player)):
+                                $this->showForm($player, "LobbySelector");
+                                break;
+                            case $item->equals($this->getConfigItem($player)):
+                                $this->showForm($player, "ConfigMenu");
+                                break;
+                        }
+                        $this->itemCountDown[$player->getName()] = time();
+                        return;
+                    }
+                    break;
+            }
+        } else*/if ($pk->trData instanceof UseItemOnEntityTransactionData) {
+            switch ($pk->trData->getActionType()) {
+                case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
+                case UseItemOnEntityTransactionData::ACTION_ATTACK:
+                case UseItemOnEntityTransactionData::ACTION_INTERACT:
+                    $target = $player->level->getEntity($pk->trData->getEntityRuntimeId());
+                    if (!$target instanceof HumanEntity) return;
+                    $timeToNexHit = 2;
+                    $server = Human::getId($target);
+                    if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
+                        switch ($server) {
+                            case "hcf":
+                                $player->transferServer("HCF");
+                                break;
+
+                        }
+                        $this->hitNpc[$player->getName()] = time();
+                    }
+                    break;
+            }
         }
     }
 }

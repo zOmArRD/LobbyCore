@@ -168,6 +168,8 @@ final class ServerManager
             $players += $server->getPlayers();
         }
 
+        $players += count($this->getNetwork()->getServerPM()->getOnlinePlayers());
+
         return $players;
     }
 
@@ -183,12 +185,12 @@ final class ServerManager
         foreach ($servers as $server) {
             if ($server->getName() == $target) {
                 if ($server->isOnline) {
-                    return "§a" . "players: §f" . $server->getPlayers();
+                    return "§a" . "PLAYING: §f" . $server->getPlayers();
                 } else {
                     return "§c" . "OFFLINE";
                 }
             }
         }
-        return "loading...";
+        return "§cserver_not_found";
     }
 }
