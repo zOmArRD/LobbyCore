@@ -43,11 +43,17 @@ abstract class ScoreboardAPI
         return $this->player;
     }
 
+    /**
+     * @param string $objectiveName
+     */
     public function setObjectiveName(string $objectiveName): void
     {
         $this->objectiveName[$this->getPlayer()->getName()] = $objectiveName;
     }
 
+    /**
+     * @return string
+     */
     public function getObjectiveName(): string
     {
         return $this->objectiveName[$this->getPlayer()->getName()];
@@ -58,13 +64,23 @@ abstract class ScoreboardAPI
         unset($this->objectiveName[$this->getPlayer()->getName()]);
     }
 
+    /**
+     * @return bool
+     */
     public function isObjectiveName(): bool
     {
         return isset($this->objectiveName[$this->getPlayer()->getName()]);
     }
 
+    /**
+     * @param NetworkPlayer $player
+     */
     abstract public function __construct(NetworkPlayer $player);
 
+    /**
+     * @param string $objectiveName
+     * @param string $displayName
+     */
     public function new(string $objectiveName, string $displayName): void
     {
         if ($this->isObjectiveName()) {
@@ -81,6 +97,10 @@ abstract class ScoreboardAPI
         $this->getPlayer()->sendDataPacket($packet);
     }
 
+    /**
+     * @param int    $score
+     * @param string $message
+     */
     public function setLine(int $score, string $message): void
     {
         if (!$this->isObjectiveName()) {
@@ -130,6 +150,9 @@ abstract class ScoreboardAPI
         $this->getPlayer()->sendDataPacket($packet);
     }
 
+    /**
+     * @return Network
+     */
     public function getNetwork(): Network
     {
         return new Network();

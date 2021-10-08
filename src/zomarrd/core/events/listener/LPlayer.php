@@ -27,7 +27,6 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\EmotePacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
 use ReflectionClass;
 use ReflectionException;
@@ -84,6 +83,9 @@ final class LPlayer implements Listener
         }
     }
 
+    /**
+     * @param PlayerCreationEvent $ev
+     */
     public function onPlayerCreation(PlayerCreationEvent $ev): void
     {
         $ev->setPlayerClass(NetworkPlayer::class);
@@ -113,6 +115,9 @@ final class LPlayer implements Listener
         });
     }
 
+    /**
+     * @param PlayerLoginEvent $ev
+     */
     public function onLoging(PlayerLoginEvent $ev): void
     {
         $player = $ev->getPlayer();
@@ -132,6 +137,9 @@ final class LPlayer implements Listener
         $this->login[$pn] = 1;
     }
 
+    /**
+     * @param PlayerJoinEvent $ev
+     */
     public function onPlayerJoin(PlayerJoinEvent $ev): void
     {
         $ev->setJoinMessage(null);
@@ -154,11 +162,17 @@ final class LPlayer implements Listener
         new FloatingTextManager($player);
     }
 
+    /**
+     * @param PlayerQuitEvent $ev
+     */
     public function onPlayerQuit(PlayerQuitEvent $ev): void
     {
         $ev->setQuitMessage(null);
     }
 
+    /**
+     * @param PlayerExhaustEvent $ev
+     */
     public function onExhaust(PlayerExhaustEvent $ev): void
     {
         $ev->setCancelled();
@@ -194,6 +208,9 @@ final class LPlayer implements Listener
         }
     }
 
+    /**
+     * @param InventoryTransactionEvent $ev
+     */
     public function preventSlotChange(InventoryTransactionEvent $ev): void
     {
         $player = $ev->getTransaction()->getSource();
@@ -209,11 +226,17 @@ final class LPlayer implements Listener
         }
     }
 
+    /**+
+     * @param EntityDamageEvent $ev
+     */
     public function preventPlayerDamage(EntityDamageEvent $ev): void
     {
         $ev->setCancelled();
     }
 
+    /**
+     * @param BlockBreakEvent $ev
+     */
     public function preventBreak(BlockBreakEvent $ev): void
     {
         $player = $ev->getPlayer();
@@ -229,6 +252,9 @@ final class LPlayer implements Listener
         }
     }
 
+    /**
+     * @param BlockPlaceEvent $ev
+     */
     public function preventPlace(BlockPlaceEvent $ev): void
     {
         $player = $ev->getPlayer();

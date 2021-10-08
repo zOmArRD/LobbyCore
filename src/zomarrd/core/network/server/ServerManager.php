@@ -32,16 +32,26 @@ final class ServerManager
     /** @var Server */
     private static Server $currentServer;
 
+    /**
+     * @return Network
+     */
     private function getNetwork(): Network
     {
         return new Network();
     }
 
+    /**
+     * @return Config
+     */
     private function getConfig(): Config
     {
         return $this->getNetwork()->getResourceManager()->getArchive("network.data.yml");
     }
 
+    /**
+     * Es la funcion mas importante...
+     * <b>Es la encargada de registrar los servidores y verificarlos </b>
+     */
     public function init(): void
     {
         /** @var string $currentServerName */
@@ -81,36 +91,6 @@ final class ServerManager
     }
 
     /**
-     * @param string $serverName
-     * @param int    $players
-     * @param bool   $isOnline
-     * @param bool   $isWhitelisted
-     *
-     * @deprecated Function not tested, possibly not used.
-     */
-    public function updateServerData(string $serverName, int $players = 0, bool $isOnline = false, bool $isWhitelisted = false)
-    {
-        if (!isset(self::$servers[$serverName])) {
-            self::$servers[$serverName] = new Server($serverName, $players, $isOnline, $isWhitelisted);
-            LobbyCore::$logger->notice("A new server has been registered | ($serverName)");
-            return;
-        }
-
-        self::$servers[$serverName]->update($serverName, $players, $isOnline, $isWhitelisted);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return Server|null
-     * @deprecated Function not tested, possibly not used.
-     */
-    public function getServer(string $name): ?Server
-    {
-        return self::$servers[$name] ?? null;
-    }
-
-    /**
      * @return Server
      */
     public function getCurrentServer(): Server
@@ -140,20 +120,6 @@ final class ServerManager
             }
         }
         return $finalServer;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPracticePlayers(): int
-    {
-        $players = 0;
-        foreach (self::getServers() as $server) {
-            if ($server->getName() === self::getConfig()->get("downstream.server")) {
-                $players = +$server->getPlayers();
-            }
-        }
-        return (int)$players;
     }
 
     /**

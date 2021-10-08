@@ -26,6 +26,9 @@ strings:
 
   # Items name
   item.navigator: "{reset}{gold}{bold}Server Selector {reset}{gray}(use)"
+  item.settings: "{bold}{gray}» {reset}{gold}Settings {gray}(Click) {bold}«"
+  item.party: "{bold}{gray}» {reset}{gold}Party {gray}(Click) {bold}«"
+  item.cosmetics: "{bold}{gray}» {reset}{gold}Cosmetics {gray}(Click) {bold}«"
 
   # Navigator Form
   form.title.navigator: "{bold}{gray}» {gold}Greek {white}Network {gray}«"

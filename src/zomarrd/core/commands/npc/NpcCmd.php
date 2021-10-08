@@ -37,6 +37,11 @@ final class NpcCmd extends Command
         }
     }
 
+    /**
+     * @param string $prefix
+     *
+     * @return string|null
+     */
     private function getSub(string $prefix): ?string
     {
         return match ($prefix) {
@@ -47,6 +52,11 @@ final class NpcCmd extends Command
         };
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string        $commandLabel
+     * @param array         $args
+     */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender instanceof NetworkPlayer) return;

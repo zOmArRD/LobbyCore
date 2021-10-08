@@ -26,6 +26,10 @@ final class Scoreboard extends ScoreboardAPI
     /** @var string[] This is to replace blanks */
     private const EMPTY_CACHE = ["§0\e", "§1\e", "§2\e", "§3\e", "§4\e", "§5\e", "§6\e", "§7\e", "§8\e", "§9\e", "§a\e", "§b\e", "§c\e", "§d\e", "§e\e"];
 
+    /**
+     * Establece la scoreboard
+     * y tambien verifica los ajustes del jugador.
+     */
     public function set(): void
     {
         $pn = $this->getPlayer()->getName();
@@ -41,6 +45,10 @@ final class Scoreboard extends ScoreboardAPI
         $this->update();
     }
 
+    /**
+     * Se encarga de enviar las lineas
+     * de la scoreboard al jugador.
+     */
     public function update(): void
     {
         $player = $this->getPlayer();

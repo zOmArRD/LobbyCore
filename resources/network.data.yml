@@ -11,10 +11,12 @@ current.server: "Lobby-1"
 #   0 = "textures/items/apple_golden" | Image is provided by PATH
 #   1 = "https://gooogle.png" | The image is provided by URL.
 servers.availables: # config for duels available.
-  - server.name: "HCF"
+  -  : "HCF"
+    npc.id: "hcf"
     image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353571950632/image1.png"
     image.type: 1
   - server.name: "Practice"
+    npc.id: "practice"
     image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353085407314/image0.png"
     image.type: 1
 ...

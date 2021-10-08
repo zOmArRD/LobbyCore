@@ -13,7 +13,6 @@ namespace zomarrd\core\modules\floatingtext;
 
 use Exception;
 use pocketmine\math\Vector3;
-use zomarrd\core\network\data\ResourcesManager;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\utils\TextUtils;
@@ -47,6 +46,9 @@ final class FloatingTextManager extends FloatingText
         $this->loadTextLobby();
     }
 
+    /**
+     * @param string $name
+     */
     private function loadNpcText(string $name): void
     {
         $player = $this->getPlayer();

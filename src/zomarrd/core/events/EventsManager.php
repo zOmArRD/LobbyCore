@@ -13,7 +13,6 @@ namespace zomarrd\core\events;
 
 use zomarrd\core\events\listener\InteractListener;
 use zomarrd\core\events\listener\LPlayer;
-use zomarrd\core\events\listener\NetworkListener;
 use zomarrd\core\LobbyCore;
 use const zOmArRD\PREFIX;
 

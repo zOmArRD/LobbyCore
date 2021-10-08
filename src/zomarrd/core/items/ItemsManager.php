@@ -30,10 +30,18 @@ final class ItemsManager
         return ItemFactory::get($itemId)->setCustomName($customName);
     }
 
+    /**
+     * @param string        $itemId
+     * @param NetworkPlayer $player
+     *
+     * @return Item
+     */
     static public function get(string $itemId, NetworkPlayer $player): Item
     {
         return match ($itemId) {
             "item.navigator" => self::load(ItemIds::COMPASS, $player->getLangTranslated("item.navigator")),
+            "item.settings" => self::load(ItemIds::MOB_HEAD, $player->getLangTranslated("item.settings")),
+            "item.cosmetics" => self::load(BlockIds::ENDER_CHEST, $player->getLangTranslated("item.cosmetics")),
             default => Item::get(BlockIds::AIR),
         };
     }

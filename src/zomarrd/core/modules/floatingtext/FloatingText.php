@@ -26,6 +26,11 @@ abstract class FloatingText
     /** @var array */
     private static array $texts = [];
 
+    /**
+     * @param Vector3 $vector3
+     *
+     * @return int
+     */
     public function create(Vector3 $vector3): int
     {
         $eid = Entity::$entityCount++;
@@ -47,7 +52,12 @@ abstract class FloatingText
         return $eid;
     }
 
-    public function send(int $eid, NetworkPlayer $player, string $text = "loading..."): void
+    /**
+     * @param int           $eid
+     * @param NetworkPlayer $player
+     * @param string        $text
+     */
+    public function send(int $eid, NetworkPlayer $player, string $text): void
     {
         /** @var AddPlayerPacket $pk */
         $pk = clone self::$texts[$eid];
@@ -56,6 +66,10 @@ abstract class FloatingText
         $player->directDataPacket($pk);
     }
 
+    /**
+     * @param int           $eid
+     * @param NetworkPlayer $player
+     */
     public function purge(int $eid, NetworkPlayer $player): void
     {
         $pk = new RemoveActorPacket();
@@ -64,6 +78,12 @@ abstract class FloatingText
         $player->directDataPacket($pk);
     }
 
+    /**
+     * @param string $name
+     * @param string $type
+     *
+     * @return int|float|null
+     */
     public static function getNpcPosition(string $name, string $type): int|float|null
     {
         return Human::getPosition($name, $type);

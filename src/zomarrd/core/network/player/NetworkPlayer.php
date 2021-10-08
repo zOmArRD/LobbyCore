@@ -124,6 +124,12 @@ final class NetworkPlayer extends Player
         }
     }
 
+    /**
+     * Funcion para transferir al jugador
+     * a otro servidor, debe estar proxieado.
+     *
+     * @param string $target
+     */
     public function transferServer(string $target): void
     {
         $servers = $this->getNetwork()->getServerManager()->getServers();
@@ -135,20 +141,13 @@ final class NetworkPlayer extends Player
         foreach ($servers as $server) {
             if ($server->getName() == $target) {
                 if ($server->isOnline()) {
-                    if (!$server->isWhitelisted()) {
+                    if (!$server->isWhitelisted() || $this->isOp()) {
                         $this->sendMessage(PREFIX . TextUtils::replaceColor("{green}Connecting to the server..."));
                         $pk = new TransferPacket();
                         $pk->address = $target;
                         $this->directDataPacket($pk);
                     } else {
-                        if ($this->isOp()) {
-                            $this->sendMessage(PREFIX . TextUtils::replaceColor("{green}Connecting to the server..."));
-                            $pk = new TransferPacket();
-                            $pk->address = $target;
-                            $this->directDataPacket($pk);
-                        } else {
-                            $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
-                        }
+                        $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
                         return;
                     }
                 } else {
@@ -161,6 +160,9 @@ final class NetworkPlayer extends Player
         }
     }
 
+    /**
+     * @param int $effectId
+     */
     public function showScreenAnimation(int $effectId): void
     {
         $pk = new OnScreenTextureAnimationPacket();

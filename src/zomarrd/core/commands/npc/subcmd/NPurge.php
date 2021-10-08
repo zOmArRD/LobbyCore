@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\core\commands\npc\subcmd;
 
+use Exception;
 use pocketmine\command\CommandSender;
 use zomarrd\core\commands\ISubCommand;
 use zomarrd\core\modules\npc\Human;
@@ -20,7 +21,10 @@ use const zOmArRD\PREFIX;
 
 final class NPurge implements ISubCommand
 {
-
+    /**
+     * @param CommandSender $player
+     * @param array         $args
+     */
     public function executeSub(CommandSender $player, array $args): void
     {
         if (!$player instanceof NetworkPlayer) return;
@@ -43,14 +47,26 @@ final class NPurge implements ISubCommand
                     if (!$entity instanceof NetworkPlayer) {
                         $entity->kill();
                         $player->sendMessage(PREFIX . "§a" . "all entities were successfully removed!");
+                        return;
                     }
                 }
             }
-        } elseif ($npcName == "hcf") {
-            Human::purge($npcName);
-            $player->sendMessage(PREFIX . "§a" . "$npcName entity has been removed");
-        } else {
-            $player->sendMessage(PREFIX . "§cNpc id not found");
+        }
+
+        $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
+
+        try {
+            foreach ($config->get("servers.availables") as $serverData) {
+                if ($npcName == $serverData['npc.id']) {
+                    Human::purge($npcName);
+                    $player->sendMessage(PREFIX . "§a" . "$npcName entity has been removed");
+                } else {
+                    $player->sendMessage(PREFIX . "§cNpc id not found");
+                }
+                return;
+            }
+        } catch (Exception) {
+            /* todo: check this. */
         }
     }
 }

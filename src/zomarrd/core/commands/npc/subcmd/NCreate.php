@@ -11,9 +11,11 @@ declare(strict_types=1);
 
 namespace zomarrd\core\commands\npc\subcmd;
 
+use Exception;
 use pocketmine\command\CommandSender;
 use zomarrd\core\commands\ISubCommand;
 use zomarrd\core\modules\npc\Human;
+use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use const zOmArRD\PREFIX;
 
@@ -39,15 +41,20 @@ final class NCreate implements ISubCommand
 
         $npcName = $args[0];
 
-        switch ($npcName) {
-            case "hcf":
-            case "practice":
-                Human::spawn($npcName, $player);
-                $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
-                break;
-            default:
-                $player->sendMessage(PREFIX . "§cNpc id not found");
-                break;
+        $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
+
+        try {
+            foreach ($config->get("servers.availables") as $serverData) {
+                if ($npcName == $serverData['npc.id']) {
+                    Human::spawn($npcName, $player);
+                    $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
+                } else {
+                    $player->sendMessage(PREFIX . "§cNpc id not found");
+                }
+                return;
+            }
+        } catch (Exception) {
+            /* todo: check this. */
         }
     }
 }

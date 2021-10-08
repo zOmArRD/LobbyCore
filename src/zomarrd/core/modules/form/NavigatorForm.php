@@ -25,6 +25,9 @@ final class NavigatorForm
         $this->show($player);
     }
 
+    /**
+     * @param NetworkPlayer $player
+     */
     public function show(NetworkPlayer $player): void
     {
         $form = new SimpleForm(function (NetworkPlayer $player, $data) {
