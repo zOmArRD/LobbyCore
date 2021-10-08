@@ -22,7 +22,6 @@ use zomarrd\core\items\ItemsManager;
 use zomarrd\core\modules\lang\LangManager;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\scoreboard\Scoreboard;
-use zomarrd\core\network\server\ServerManager;
 use zomarrd\core\network\utils\TextUtils;
 use const zOmArRD\PREFIX;
 use const zOmArRD\Spawn_Data;
@@ -104,7 +103,7 @@ final class NetworkPlayer extends Player
         if (isset($inventory)) {
             $inventory->clearAll();
 
-            foreach (["item.navigator" => 4] as $item => $index) {
+            foreach (["item.navigator" => 0] as $item => $index) {
                 $this->setItem($index, ItemsManager::get($item, $this));
             }
         }
@@ -142,17 +141,23 @@ final class NetworkPlayer extends Player
                         $pk->address = $target;
                         $this->directDataPacket($pk);
                     } else {
-                        $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
+                        if ($this->isOp()) {
+                            $this->sendMessage(PREFIX . TextUtils::replaceColor("{green}Connecting to the server..."));
+                            $pk = new TransferPacket();
+                            $pk->address = $target;
+                            $this->directDataPacket($pk);
+                        } else {
+                            $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
+                        }
                         return;
                     }
                 } else {
                     $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is offline!"));
-                    return;
                 }
             } else {
                 $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
-                return;
             }
+            return;
         }
     }
 

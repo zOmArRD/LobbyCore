@@ -26,11 +26,13 @@ final class ResourcesManager
 
     public function init(): void
     {
+        LobbyCore::$logger->notice("Verification of resources has started");
         @mkdir($this->getNetwork()->getPlugin()->getDataFolder());
         $configYml = "config.yml";
 
-        foreach (['config.yml', 'spawn.data.yml', 'network.data.yml', 'scoreboard.yml', 'npc.data.yml'] as $data) {
+        foreach (['config.yml', 'spawn.data.yml', 'network.data.yml', 'scoreboard.yml', 'npc.data.yml', 'floatingtext.data.yml'] as $data) {
             $this->getNetwork()->getPlugin()->saveResource($data);
+            LobbyCore::$logger->info("$data file has been saved");
         }
 
         $mainYml = $this->getArchive($configYml);

@@ -39,11 +39,15 @@ final class NCreate implements ISubCommand
 
         $npcName = $args[0];
 
-        if ($npcName == "hcf") {
-            Human::spawn("hcf", $player);
-            $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
-        } else {
-            $player->sendMessage(PREFIX . "§cNpc id not found");
+        switch ($npcName) {
+            case "hcf":
+            case "practice":
+                Human::spawn($npcName, $player);
+                $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
+                break;
+            default:
+                $player->sendMessage(PREFIX . "§cNpc id not found");
+                break;
         }
     }
 }

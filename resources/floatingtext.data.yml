@@ -1,0 +1,21 @@
+################################
+# This was written by zOmArRD  #
+# For Greek Network MC:Bedrock #
+################################
+
+# Floating Text Configuration.
+---
+lobby.text.position:
+  pos.x: 55
+  pos.y: 54
+  pos.z: 44
+
+# Put the title in the first array
+lobby.text:
+  - "§6§lGreek §fNetwork"
+  - ""
+  - "§fWelcome §6{player.get.name}"
+  - "§fyou are on the §a{current.server}"
+  - "§aStore: §6store.greekmc.net"
+  - ""
+...

@@ -6,10 +6,10 @@
 display.name: "§6§lGreek §fNetwork"
 
 eng:
-  - "{gray}──────────────"
+  - "{gray}"
   - "{white} Server: {gold}{current.server}"
   - "{white} Players: {gold}{network.get.players}"
   - ""
   - "{gray} play.greekmc.net"
-  - "{red}{gray}──────────────"
+  - "{red}{gray}"
 ...

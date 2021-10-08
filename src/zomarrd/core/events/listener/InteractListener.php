@@ -16,6 +16,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use zomarrd\core\items\ItemsManager;
 use zomarrd\core\modules\form\NavigatorForm;
 use zomarrd\core\modules\npc\entity\HumanEntity;
@@ -30,15 +31,15 @@ final class InteractListener implements Listener
     public function legacyInteract(PlayerInteractEvent $ev): void
     {
         $player = $ev->getPlayer();
-        $item = $ev->getItem();
+        /*$item = $ev->getItem();
         $countdown = 1.5;
-        $pn = $player->getName();
+        $pn = $player->getName();*/
 
         if (!$player->isOp()) {
             $ev->setCancelled();
         }
 
-        if (!$player instanceof NetworkPlayer) return;
+        /*if (!$player instanceof NetworkPlayer) return;
         if (!isset($this->itemCountDown[$pn]) or time() - $this->itemCountDown[$pn] >= $countdown) {
             switch (true) {
                 case $item->equals(ItemsManager::get("item.navigator", $player)):
@@ -46,7 +47,7 @@ final class InteractListener implements Listener
                     break;
             }
             $this->itemCountDown[$pn] = time();
-        }
+        }*/
     }
 
     public function interactHuman(DataPacketReceiveEvent $event)
@@ -57,7 +58,7 @@ final class InteractListener implements Listener
         if (!$player instanceof NetworkPlayer) return;
         if (!$pk instanceof InventoryTransactionPacket) return;
 
-        /*if ($pk->trData instanceof UseItemTransactionData) {
+        if ($pk->trData instanceof UseItemTransactionData) {
             switch ($pk->trData->getActionType()) {
                 case UseItemTransactionData::ACTION_CLICK_AIR:
                 case UseItemTransactionData::ACTION_CLICK_BLOCK:
@@ -65,17 +66,8 @@ final class InteractListener implements Listener
                     $countdown = 1.5;
                     if (!isset($this->itemCountDown[$player->getName()]) or time() - $this->itemCountDown[$player->getName()] >= $countdown) {
                         switch (true) {
-                            case $item->equals($this->getServerSelectItem($player)):
-                                $this->showForm($player, "ServerSelector");
-                                break;
-                            case $item->equals($this->getCosmeticsItem($player)):
-                                $this->showForm($player, "CMenu");
-                                break;
-                            case $item->equals($this->getLobbyItem($player)):
-                                $this->showForm($player, "LobbySelector");
-                                break;
-                            case $item->equals($this->getConfigItem($player)):
-                                $this->showForm($player, "ConfigMenu");
+                            case $item->equals(ItemsManager::get("item.navigator", $player)):
+                                new NavigatorForm($player);
                                 break;
                         }
                         $this->itemCountDown[$player->getName()] = time();
@@ -83,7 +75,7 @@ final class InteractListener implements Listener
                     }
                     break;
             }
-        } else*/if ($pk->trData instanceof UseItemOnEntityTransactionData) {
+        } elseif ($pk->trData instanceof UseItemOnEntityTransactionData) {
             switch ($pk->trData->getActionType()) {
                 case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
                 case UseItemOnEntityTransactionData::ACTION_ATTACK:
@@ -97,7 +89,9 @@ final class InteractListener implements Listener
                             case "hcf":
                                 $player->transferServer("HCF");
                                 break;
-
+                            case "practice":
+                                $player->transferServer("Practice");
+                                break;
                         }
                         $this->hitNpc[$player->getName()] = time();
                     }

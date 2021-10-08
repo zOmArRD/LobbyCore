@@ -4,7 +4,7 @@
 ################################
 ---
 # For the colors, please read the documentation on TextUtils. {todo: change this}
-prefix: "{bold}{gold}G{gray}N {gray}»{reset} "
+prefix: "{bold}{gold}G{white}N {gray}»{reset} "
 
 # Credentials for the MYSQL database.
 # It is extremely necessary.

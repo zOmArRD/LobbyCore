@@ -105,7 +105,7 @@ final class LobbyCore extends PluginBase
 
     private function checkDb(): void
     {
-        self::$logger->info(PREFIX . "Checking the database");
+        self::$logger->info(PREFIX . "checking the database...");
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(ServerName VARCHAR(50) UNIQUE, Players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS settings(player VARCHAR(50) UNIQUE, language TEXT, scoreboard SMALLINT DEFAULT 1);"));
     }

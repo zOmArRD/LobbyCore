@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\core\modules\npc;
 
+use Exception;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
 use pocketmine\nbt\tag\CompoundTag;
@@ -72,7 +73,7 @@ final class Human
         $human->setSkin(new Skin($name, $skinData->getSkinData(), $skinData->getCapeData(), $skinData->getGeometryName(), $skinData->getGeometryData()));
         $human->setNameTagAlwaysVisible();
         $human->setNameTagVisible();
-        $human->setNameTag("loading...");
+        $human->setNameTag("§c" . "server.not.found");
         $human->setImmobile();
         $human->spawnToAll();
     }
@@ -83,20 +84,6 @@ final class Human
      */
     public static function applyName(string $name, string $text): void
     {
-        /*if (Spawn_Data['is.enabled']) {
-            $level = self::getNetwork()->getServerPM()->getLevelByName(Spawn_Data['world.name']);
-        } else {
-            $level = self::getNetwork()->getServerPM()->getDefaultLevel()->getName();
-        }*/
-
-        /*foreach ($level->getEntities() as $entity) {
-            if ($entity instanceof CustomHuman) {
-                if ($entity->getSkin()->getSkinId() == $name) {
-                    $entity->setNameTag($text);
-                }
-            }
-        }*/
-
         foreach (Server::getInstance()->getLevels() as $level) {
             foreach ($level->getEntities() as $entity) {
                 if ($entity instanceof HumanEntity) {
@@ -162,9 +149,9 @@ final class Human
     public static function getPosition(string $name, string $type): int|float|null
     {
         $config = (new Network())->getResourceManager()->getArchive("npc.data.yml")->getAll();
-        if (!empty($config)) {
+        try {
             return $config[$name][$type];
-        } else {
+        } catch (Exception) {
             return null;
         }
     }

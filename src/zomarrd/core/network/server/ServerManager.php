@@ -184,13 +184,13 @@ final class ServerManager
 
         foreach ($servers as $server) {
             if ($server->getName() == $target) {
-                if ($server->isOnline) {
+                if ($server->isOnline()) {
                     return "§a" . "PLAYING: §f" . $server->getPlayers();
                 } else {
                     return "§c" . "OFFLINE";
                 }
             }
         }
-        return "§cserver_not_found";
+        return "§cserver.not.found";
     }
 }

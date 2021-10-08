@@ -11,8 +11,12 @@ declare(strict_types=1);
 
 namespace zomarrd\core\modules\floatingtext;
 
+use Exception;
 use pocketmine\math\Vector3;
+use zomarrd\core\network\data\ResourcesManager;
+use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
+use zomarrd\core\network\utils\TextUtils;
 
 final class FloatingTextManager extends FloatingText
 {
@@ -39,11 +43,13 @@ final class FloatingTextManager extends FloatingText
     {
         $this->setPlayer($player);
 
-        foreach (["hcf"] as $npc) $this->loadNpcText($this->getPlayer(), $npc);
+        foreach (["hcf", "practice"] as $npc) $this->loadNpcText($npc);
+        $this->loadTextLobby();
     }
 
-    private function loadNpcText(NetworkPlayer $player, string $name): void
+    private function loadNpcText(string $name): void
     {
+        $player = $this->getPlayer();
         switch ($name) {
             case "hcf":
                 if (self::getNpcPosition($name, "X") !== null) {
@@ -66,5 +72,44 @@ final class FloatingTextManager extends FloatingText
             default:
                 break;
         }
+    }
+
+    private function loadTextLobby(): void
+    {
+        $player = $this->getPlayer();
+
+        $archive = $this->getNetwork()->getResourceManager()->getArchive("floatingtext.data.yml");
+        $pos = $archive->get("lobby.text.position");
+        $lines = $archive->get("lobby.text");
+
+        try {
+            $text = $this->create(new Vector3(($pos["pos.x"] ?? 0) + 0.5, ($pos["pos.y"] ?? 0) + 2.85, ($pos["pos.z"] ?? 0) + 0.5));
+            $this->send($text, $player, $lines[0]);
+
+            $text = $this->create(new Vector3(($pos["pos.x"] ?? 0) + 0.5, ($pos["pos.y"] ?? 0) + 2.50, ($pos["pos.z"] ?? 0) + 0.5));
+            $this->send($text, $player, $lines[1]);
+
+            $text = $this->create(new Vector3(($pos["pos.x"] ?? 0) + 0.5, ($pos["pos.y"] ?? 0) + 2.00, ($pos["pos.z"] ?? 0) + 0.5));
+            $this->send($text, $player, TextUtils::replaceVars((string)$lines[2], ["{player.get.name}" => $player->getName()]));
+
+            $text = $this->create(new Vector3(($pos["pos.x"] ?? 0) + 0.5, ($pos["pos.y"] ?? 0) + 1.70, ($pos["pos.z"] ?? 0) + 0.5));
+            $this->send($text, $player, TextUtils::replaceVars($lines[3], ["{{current.server}" => "{$this->getNetwork()->getServerManager()->getCurrentServer()->getName()}"]));
+
+            $text = $this->create(new Vector3(($pos["pos.x"] ?? 0) + 0.5, ($pos["pos.y"] ?? 0) + 1.40, ($pos["pos.z"] ?? 0) + 0.5));
+            $this->send($text, $player, $lines[4]);
+
+            $text = $this->create(new Vector3(($pos["pos.x"] ?? 0) + 0.5, ($pos["pos.y"] ?? 0) + 0.85, ($pos["pos.z"] ?? 0) + 0.5));
+            $this->send($text, $player, $lines[5]);
+        } catch (Exception $ex) {
+            var_dump("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+        }
+    }
+
+    /**
+     * @return Network
+     */
+    private function getNetwork(): Network
+    {
+        return new Network();
     }
 }

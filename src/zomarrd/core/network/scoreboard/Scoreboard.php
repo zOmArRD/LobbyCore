@@ -29,9 +29,9 @@ final class Scoreboard extends ScoreboardAPI
     public function set(): void
     {
         $pn = $this->getPlayer()->getName();
-        if (Session::$playerSettings[$pn]["scoreboard"]) {
+        if (isset(Session::$playerSettings[$pn]["scoreboard"])) {
             $scData = Session::$playerSettings[$pn];
-            if (!$scData["scoreboard"]) {
+            if (!(bool)$scData["scoreboard"]) {
                 return;
             }
         }
