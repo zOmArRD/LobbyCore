@@ -103,7 +103,7 @@ final class NetworkPlayer extends Player
         if (isset($inventory)) {
             $inventory->clearAll();
 
-            foreach (["item.navigator" => 0] as $item => $index) {
+            foreach (["item.navigator" => 0, "item.settings" => 8] as $item => $index) {
                 $this->setItem($index, ItemsManager::get($item, $this));
             }
         }
