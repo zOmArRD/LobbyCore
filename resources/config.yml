@@ -3,7 +3,7 @@
 # For Greek Network MC:Bedrock #
 ################################
 ---
-# For the colors, please read the documentation on TextUtils. {todo: change this}
+# For the colors, please read the documentation on /src/zomarrd/core/network/utils/TextUtils.php.
 prefix: "{bold}{gold}G{white}N {gray}»{reset} "
 
 # Credentials for the MYSQL database.

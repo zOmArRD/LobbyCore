@@ -17,6 +17,7 @@ use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\server\ServerManager;
 use zomarrd\core\network\utils\TextUtils;
+use const zOmArRD\PREFIX;
 
 final class NavigatorForm
 {
@@ -33,13 +34,20 @@ final class NavigatorForm
         $form = new SimpleForm(function (NetworkPlayer $player, $data) {
             if (isset($data)) {
                 if ($data === "close") return;
-                switch ($data) {
-                    case "close":
+                $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
+                try {
+                    foreach ($config->get("servers.availables") as $serverData) {
+                        if ($data == $serverData['npc.id']) {
+                            $player->transferServer($serverData['server.name']);
+                        } else {
+                            $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
+                        }
                         return;
-                    case "HCF":
-                    case "Practice":
-                        $player->transferServer($data);
-                        break;
+                    }
+                } catch (Exception $ex) {
+                    if ($player->isOp()) {
+                        $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+                    }
                 }
             }
         });
@@ -53,7 +61,10 @@ final class NavigatorForm
             foreach ($config->get("servers.availables") as $button) {
                 $form->addButton("§6{$button['server.name']}" . "\n" . ServerManager::getServerPlayers($button['server.name']), $button['image.type'], $button['image.link'], $button['server.name']);
             }
-        } catch (Exception) {
+        } catch (Exception $ex) {
+            if ($player->isOp()) {
+                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+            }
         }
         $form->addButton(TextUtils::replaceColor($player->getLangTranslated('form.button.close')), 0, $images['close'], 'close');
         $player->sendForm($form);

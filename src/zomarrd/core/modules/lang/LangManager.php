@@ -116,6 +116,9 @@ final class LangManager
         return new Network();
     }
 
+    /**
+     * @todo Finalize this.
+     */
     public function showForm(): void
     {
         $player = $this->getPlayer();

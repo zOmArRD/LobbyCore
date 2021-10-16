@@ -44,6 +44,9 @@ final class LPlayer implements Listener
     /** @var array */
     private array $login, $join, $move;
 
+    /**
+     * @return Network
+     */
     public function getNetwork(): Network
     {
         return new Network();
