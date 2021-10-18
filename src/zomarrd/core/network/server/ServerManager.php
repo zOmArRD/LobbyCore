@@ -49,8 +49,8 @@ final class ServerManager
     }
 
     /**
-     * Es la funcion mas importante...
-     * <b>Es la encargada de registrar los servidores y verificarlos </b>
+     * It is the most important function...
+     * <b>It is in charge of registering the servers and verifying them </b>
      */
     public function init(): void
     {

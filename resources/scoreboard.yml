@@ -5,6 +5,7 @@
 ---
 display.name: "§6§lGreek §fNetwork"
 
+# ALERT: If you add another language you must add another array with its respective ISO code.
 eng:
   - "{gray}"
   - "{white} Server: {gold}{current.server}"

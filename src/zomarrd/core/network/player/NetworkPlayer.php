@@ -125,8 +125,7 @@ final class NetworkPlayer extends Player
     }
 
     /**
-     * Funcion para transferir al jugador
-     * a otro servidor, debe estar proxieado.
+     * Function to transfer the player to another server, it must be proxied.
      *
      * @param string $target
      */

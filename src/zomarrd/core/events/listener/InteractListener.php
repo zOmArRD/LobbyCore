@@ -24,7 +24,6 @@ use zomarrd\core\modules\npc\entity\HumanEntity;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
-use const zOmArRD\PREFIX;
 
 final class InteractListener implements Listener
 {
@@ -34,22 +33,10 @@ final class InteractListener implements Listener
     public function legacyInteract(PlayerInteractEvent $ev): void
     {
         $player = $ev->getPlayer();
-        /*$item = $ev->getItem();
-        $countdown = 1.5;
-        $pn = $player->getName();*/
 
         if (!$player->isOp()) {
             $ev->setCancelled();
         }
-        /*if (!$player instanceof NetworkPlayer) return;
-        if (!isset($this->itemCountDown[$pn]) or time() - $this->itemCountDown[$pn] >= $countdown) {
-            switch (true) {
-                case $item->equals(ItemsManager::get("item.navigator", $player)):
-                    new NavigatorForm($player);
-                    break;
-            }
-            $this->itemCountDown[$pn] = time();
-        }*/
     }
 
     public function interactHuman(DataPacketReceiveEvent $event)
@@ -64,7 +51,8 @@ final class InteractListener implements Listener
             switch ($pk->trData->getActionType()) {
                 case UseItemTransactionData::ACTION_CLICK_AIR:
                 case UseItemTransactionData::ACTION_CLICK_BLOCK:
-                    $item = $player->getInventory()->getItemInHand();
+                case UseItemOnEntityTransactionData::ACTION_INTERACT:
+                $item = $player->getInventory()->getItemInHand();
                     $countdown = 1.5;
                     if (!isset($this->itemCountDown[$player->getName()]) or time() - $this->itemCountDown[$player->getName()] >= $countdown) {
                         switch (true) {
@@ -77,33 +65,31 @@ final class InteractListener implements Listener
                     }
                     break;
             }
-        } elseif ($pk->trData instanceof UseItemOnEntityTransactionData) {
-            switch ($pk->trData->getActionType()) {
-                case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
-                case UseItemOnEntityTransactionData::ACTION_ATTACK:
-                case UseItemOnEntityTransactionData::ACTION_INTERACT:
-                    $target = $player->level->getEntity($pk->trData->getEntityRuntimeId());
-                    if (!$target instanceof HumanEntity) return;
-                    $timeToNexHit = 2;
-                    $server = Human::getId($target);
-                    if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
-                        $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
-                        try {
-                            foreach ($config->get("servers.availables") as $serverData) {
-                                if ($server == $serverData['npc.id']) {
-                                    $player->transferServer($serverData['server.name']);
-                                }
-                                return;
+        } elseif ($pk->trData instanceof UseItemOnEntityTransactionData) switch ($pk->trData->getActionType()) {
+            case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
+            case UseItemOnEntityTransactionData::ACTION_ATTACK:
+            case UseItemOnEntityTransactionData::ACTION_INTERACT:
+                $target = $player->level->getEntity($pk->trData->getEntityRuntimeId());
+                if (!$target instanceof HumanEntity) return;
+                $timeToNexHit = 2;
+                $server = Human::getId($target);
+                if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
+                    $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
+                    try {
+                        foreach ($config->get("servers.availables") as $serverData) {
+                            if ($server == $serverData['npc.id']) {
+                                $player->transferServer($serverData['server.name']);
                             }
-                        } catch (Exception $ex) {
-                            if ($player->isOp()) {
-                                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-                            }
+                            return;
                         }
-                        $this->hitNpc[$player->getName()] = time();
+                    } catch (Exception $ex) {
+                        if ($player->isOp()) {
+                            $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+                        }
                     }
-                    break;
-            }
+                    $this->hitNpc[$player->getName()] = time();
+                }
+                break;
         }
     }
 }

@@ -11,6 +11,7 @@ lobby.text.position:
   pos.z: 44
 
 # Put the title in the first array
+# ALERT: Only a maximum of 5 arrays is allowed, otherwise modify the code.
 lobby.text:
   - "§6§lGreek §fNetwork"
   - ""

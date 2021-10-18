@@ -53,8 +53,10 @@ final class NCreate implements ISubCommand
                 }
                 return;
             }
-        } catch (Exception) {
-            /* todo: check this. */
+        } catch (Exception $ex) {
+            if ($player->isOp()) {
+                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+            }
         }
     }
 }

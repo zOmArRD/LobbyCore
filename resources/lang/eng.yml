@@ -25,8 +25,8 @@ strings:
   message.scoreboard.updated: "{green}Your Scoreboard settings have been updated."
 
   # Items name
-  item.navigator: "{reset}{gold}{bold}Server Selector {reset}{gray}(use)"
-  item.settings: "{bold}{gray}» {reset}{gold}Settings {gray}(Click) {bold}«"
+  item.navigator: "{bold}{gray}» {reset}{gold}Servers {gray}(Use) {bold}«"
+  item.settings: "{bold}{gray}» {reset}{gold}Settings {gray}(Use) {bold}«"
   item.party: "{bold}{gray}» {reset}{gold}Party {gray}(Click) {bold}«"
   item.cosmetics: "{bold}{gray}» {reset}{gold}Cosmetics {gray}(Click) {bold}«"
 

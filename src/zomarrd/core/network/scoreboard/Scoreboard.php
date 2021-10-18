@@ -27,8 +27,8 @@ final class Scoreboard extends ScoreboardAPI
     private const EMPTY_CACHE = ["§0\e", "§1\e", "§2\e", "§3\e", "§4\e", "§5\e", "§6\e", "§7\e", "§8\e", "§9\e", "§a\e", "§b\e", "§c\e", "§d\e", "§e\e"];
 
     /**
-     * Establece la scoreboard
-     * y tambien verifica los ajustes del jugador.
+     * This sets the scoreboard to the player.
+     * and also check the player settings.
      */
     public function set(): void
     {
@@ -46,8 +46,7 @@ final class Scoreboard extends ScoreboardAPI
     }
 
     /**
-     * Se encarga de enviar las lineas
-     * de la scoreboard al jugador.
+     * He is in charge of sending the scoreboard lines to the player.
      */
     public function update(): void
     {
