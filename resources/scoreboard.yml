@@ -6,6 +6,7 @@
 display.name: "§6§lGreek §fNetwork"
 
 # ALERT: If you add another language you must add another array with its respective ISO code.
+# For example prefixes: {player.get.name} | You should know that they are very limited, and it is for personal use.
 eng:
   - "{gray}"
   - "{white} Server: {gold}{current.server}"

@@ -39,9 +39,7 @@ class SelectQuery extends AsyncQuery
         $rows = [];
         try {
             if ($result !== false) {
-                while ($row = $result->fetch_assoc()) {
-                    $rows[] = $row;
-                }
+                while ($row = $result->fetch_assoc()) $rows[] = $row;
                 $this->rows = serialize($rows);
             }
         } catch (Exception $exception) {

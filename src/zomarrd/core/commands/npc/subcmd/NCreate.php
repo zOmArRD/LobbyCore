@@ -44,19 +44,15 @@ final class NCreate implements ISubCommand
         $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
         try {
-            foreach ($config->get("servers.availables") as $serverData) {
+            foreach ($config->get("servers.available") as $serverData) {
                 if ($npcName == $serverData['npc.id']) {
                     Human::spawn($npcName, $player);
                     $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
-                } else {
-                    $player->sendMessage(PREFIX . "§cNpc id not found");
-                }
+                } else $player->sendMessage(PREFIX . "§cNpc id not found");
                 return;
             }
         } catch (Exception $ex) {
-            if ($player->isOp()) {
-                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-            }
+            if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
     }
 }

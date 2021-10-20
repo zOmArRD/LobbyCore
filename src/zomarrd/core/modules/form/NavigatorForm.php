@@ -36,18 +36,12 @@ final class NavigatorForm
                 if ($data === "close") return;
                 $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
                 try {
-                    foreach ($config->get("servers.availables") as $serverData) {
-                        if ($data == $serverData['npc.id']) {
-                            $player->transferServer($serverData['server.name']);
-                        } else {
-                            $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
-                        }
+                    foreach ($config->get("servers.available") as $serverData) {
+                        if ($data == $serverData['npc.id']) $player->transferServer($serverData['server.name']); else $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
                         return;
                     }
                 } catch (Exception $ex) {
-                    if ($player->isOp()) {
-                        $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-                    }
+                    if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                 }
             }
         });
@@ -58,13 +52,14 @@ final class NavigatorForm
         $form->setContent(TextUtils::replaceVars($player->getLangTranslated("form.content.navigator"), ["{player.get.name}" => $player->getName()]));
         $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
         try {
-            foreach ($config->get("servers.availables") as $button) {
-                $form->addButton("§6{$button['server.name']}" . "\n" . ServerManager::getServerPlayers($button['server.name']), $button['image.type'], $button['image.link'], $button['server.name']);
+            foreach ($config->get("servers.available") as $button) {
+                $form->addButton("§6{$button['server.name']}" . "\n" . ServerManager::getServerPlayers($button['server.name']),
+                    $button['image.type'],
+                    $button['image.link'],
+                    $button['server.name']);
             }
         } catch (Exception $ex) {
-            if ($player->isOp()) {
-                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-            }
+            if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
         $form->addButton(TextUtils::replaceColor($player->getLangTranslated('form.button.close')), 0, $images['close'], 'close');
         $player->sendForm($form);

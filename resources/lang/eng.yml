@@ -17,8 +17,9 @@ strings:
   form.button.unlocked: "{green}UnLocked"
 
   # Lang Selector Strings
-  form.title.langselector: "Choose your language:"
-  message.langselector.setlanguage: "{green}Your language is currently set to English."
+  form.title.lang.selector: "Choose your language:"
+  message.lang.set.done: "{green}Your language has been changed to English!"
+  message.lang.set.fail: "{red}Your language could not be changed!"
 
   # Scoreboard Setting Strings
   form.title.scoreboard: "Scoreboard Settings"

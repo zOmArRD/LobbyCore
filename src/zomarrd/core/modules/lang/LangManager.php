@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\core\modules\lang;
 
+use Exception;
 use pocketmine\utils\Config;
 use zomarrd\core\modules\form\lib\SimpleForm;
 use zomarrd\core\modules\mysql\AsyncQueue;
@@ -18,6 +19,8 @@ use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\session\Session;
+use zomarrd\core\network\utils\TextUtils;
+use const zOmArRD\PREFIX;
 
 final class LangManager
 {
@@ -61,7 +64,7 @@ final class LangManager
 
     /**
      * @param string $language
-     * @param bool   $safe
+     * @param bool $safe
      */
     public function set(string $language, bool $safe): void
     {
@@ -117,17 +120,38 @@ final class LangManager
     }
 
     /**
-     * @todo Finalize this.
+     * @param string $type
      */
-    public function showForm(): void
+    public function showForm(string $type = "with.back.button"): void
     {
         $player = $this->getPlayer();
         $form = new SimpleForm(function (NetworkPlayer $player, $data) {
             if (isset($data)) {
+                if ($data == "back") {
+                    /* todo: return to Settings Form */
+                } elseif ($data == "close") return;
 
+                if ($this->get() !== $data) {
+                    $this->set($data, true);
+                    $player->getInventory()->clearAll();
+                    $player->setLobbyItems();
+                    $player->sendMessage(PREFIX . TextUtils::replaceColor("message.lang.set.done"));
+                } else $player->sendMessage(PREFIX . TextUtils::replaceColor("message.lang.set.fail"));
             }
         });
 
-        $form->setTitle("");
+        $form->setTitle(TextUtils::replaceColor($this->getString("form.title.lang.selector")));
+
+        try {
+            foreach (LangManager::$config->get("languages") as $lang) $form->addButton("§a" . $lang['name'], $form::IMAGE_TYPE_URL, $lang['icon'], $lang['ISOCode']);
+        } catch (Exception $ex) {
+            if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+        }
+
+        if ($type == "with.back.button") {
+            $form->addButton($this->getString("form.button.back"), $form::IMAGE_TYPE_PATH, "", "back");
+        } else $form->addButton($this->getString("form.button.close"), $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
+
+        $player->sendForm($form);
     }
 }

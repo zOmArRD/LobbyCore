@@ -14,6 +14,7 @@ namespace zomarrd\core\network\player;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\types\GameMode;
@@ -92,9 +93,7 @@ final class NetworkPlayer extends Player
     public function setItem(int $index, Item $item): void
     {
         $pi = $this->getInventory();
-        if (isset($pi)) {
-            $pi->setItem($index, $item);
-        }
+        if (isset($pi)) $pi->setItem($index, $item);
     }
 
     public function setLobbyItems(): void
@@ -103,9 +102,7 @@ final class NetworkPlayer extends Player
         if (isset($inventory)) {
             $inventory->clearAll();
 
-            foreach (["item.navigator" => 0, "item.settings" => 8] as $item => $index) {
-                $this->setItem($index, ItemsManager::get($item, $this));
-            }
+            foreach (["item.navigator" => 0, "item.settings" => 8] as $item => $index) $this->setItem($index, ItemsManager::get($item, $this));
         }
     }
 
@@ -138,23 +135,17 @@ final class NetworkPlayer extends Player
         }
 
         foreach ($servers as $server) {
-            if ($server->getName() == $target) {
-                if ($server->isOnline()) {
-                    if (!$server->isWhitelisted() || $this->isOp()) {
-                        $this->sendMessage(PREFIX . TextUtils::replaceColor("{green}Connecting to the server..."));
-                        $pk = new TransferPacket();
-                        $pk->address = $target;
-                        $this->directDataPacket($pk);
-                    } else {
-                        $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
-                        return;
-                    }
-                } else {
-                    $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is offline!"));
-                }
+            if ($server->getName() == $target) if ($server->isOnline()) if (!$server->isWhitelisted() || $this->isOp()) {
+                $this->sendMessage(PREFIX . TextUtils::replaceColor("{green}Connecting to the server..."));
+                $pk = new TransferPacket();
+                $pk->address = $target;
+                $this->directDataPacket($pk);
             } else {
-                $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
-            }
+                $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
+                return;
+            } else {
+                $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is offline!"));
+            } else $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
             return;
         }
     }

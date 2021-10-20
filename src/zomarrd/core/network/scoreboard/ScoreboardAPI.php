@@ -83,9 +83,7 @@ abstract class ScoreboardAPI
      */
     public function new(string $objectiveName, string $displayName): void
     {
-        if ($this->isObjectiveName()) {
-            $this->remove();
-        }
+        if ($this->isObjectiveName()) $this->remove();
 
         $packet = new SetDisplayObjectivePacket();
         $packet->objectiveName = $objectiveName;
@@ -103,9 +101,7 @@ abstract class ScoreboardAPI
      */
     public function setLine(int $score, string $message): void
     {
-        if (!$this->isObjectiveName()) {
-            return;
-        }
+        if (!$this->isObjectiveName()) return;
 
         if ($score > 15 || $score < 0) {
             LobbyCore::$logger->error("Score must be between the value of 1-15. $score out of range.");

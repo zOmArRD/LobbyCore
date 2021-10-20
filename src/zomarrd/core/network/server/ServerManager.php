@@ -70,6 +70,11 @@ final class ServerManager
         }), self::REFRESH_TICKS);
     }
 
+    /**
+     * Reloads the server array data from the database.
+     * <br><br>
+     * Useful for when more servers are added to the database.
+     */
     public function reloadServers(): void
     {
         self::$servers = [];
@@ -113,13 +118,10 @@ final class ServerManager
      */
     public function getServerByName(string $name): ?Server
     {
-        $finalServer = null;
         foreach (self::getServers() as $server) {
-            if ($server->getName() === $name) {
-                $finalServer = $server;
-            }
+            return ($server->getName() === $name) ? $server : null;
         }
-        return $finalServer;
+        return null;
     }
 
     /**
@@ -130,9 +132,7 @@ final class ServerManager
     public function getNetworkPlayers(): int
     {
         $players = 0;
-        foreach (self::getServers() as $server) {
-            $players += $server->getPlayers();
-        }
+        foreach (self::getServers() as $server) $players += $server->getPlayers();
 
         $players += count($this->getNetwork()->getServerPM()->getOnlinePlayers());
 
@@ -148,15 +148,9 @@ final class ServerManager
     {
         $servers = (new ServerManager)->getServers();
 
-        foreach ($servers as $server) {
-            if ($server->getName() == $target) {
-                if ($server->isOnline()) {
-                    return "§a" . "PLAYING: §f" . $server->getPlayers();
-                } else {
-                    return "§c" . "OFFLINE";
-                }
-            }
+        foreach ($servers as $server) if ($server->getName() == $target) {
+            return $server->isOnline() ? ("§a" . "PLAYING: §f" . $server->getPlayers()) : ("§c" . "OFFLINE");
         }
-        return "§cserver.not.found";
+        return "§c" . "server.not.found";
     }
 }

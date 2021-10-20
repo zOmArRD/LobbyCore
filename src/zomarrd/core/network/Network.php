@@ -65,6 +65,9 @@ final class Network
         return new ServerManager();
     }
 
+    /**
+     * @return TextUtils
+     */
     public function getTextUtils(): TextUtils
     {
         return new TextUtils();

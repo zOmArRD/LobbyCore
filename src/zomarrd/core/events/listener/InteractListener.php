@@ -34,9 +34,7 @@ final class InteractListener implements Listener
     {
         $player = $ev->getPlayer();
 
-        if (!$player->isOp()) {
-            $ev->setCancelled();
-        }
+        if (!$player->isOp()) $ev->setCancelled();
     }
 
     public function interactHuman(DataPacketReceiveEvent $event)
@@ -44,15 +42,14 @@ final class InteractListener implements Listener
         $player = $event->getPlayer();
         $pk = $event->getPacket();
 
-        if (!$player instanceof NetworkPlayer) return;
-        if (!$pk instanceof InventoryTransactionPacket) return;
+        if (!$player instanceof NetworkPlayer && !$pk instanceof InventoryTransactionPacket) return;
 
         if ($pk->trData instanceof UseItemTransactionData) {
             switch ($pk->trData->getActionType()) {
                 case UseItemTransactionData::ACTION_CLICK_AIR:
                 case UseItemTransactionData::ACTION_CLICK_BLOCK:
                 case UseItemOnEntityTransactionData::ACTION_INTERACT:
-                $item = $player->getInventory()->getItemInHand();
+                    $item = $player->getInventory()->getItemInHand();
                     $countdown = 1.5;
                     if (!isset($this->itemCountDown[$player->getName()]) or time() - $this->itemCountDown[$player->getName()] >= $countdown) {
                         switch (true) {
@@ -61,7 +58,6 @@ final class InteractListener implements Listener
                                 break;
                         }
                         $this->itemCountDown[$player->getName()] = time();
-                        return;
                     }
                     break;
             }
@@ -76,16 +72,9 @@ final class InteractListener implements Listener
                 if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
                     $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
                     try {
-                        foreach ($config->get("servers.availables") as $serverData) {
-                            if ($server == $serverData['npc.id']) {
-                                $player->transferServer($serverData['server.name']);
-                            }
-                            return;
-                        }
+                        foreach ($config->get("servers.available") as $serverData) if ($server == $serverData['npc.id']) $player->transferServer($serverData['server.name']);
                     } catch (Exception $ex) {
-                        if ($player->isOp()) {
-                            $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-                        }
+                        if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                     }
                     $this->hitNpc[$player->getName()] = time();
                 }

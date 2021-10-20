@@ -80,8 +80,7 @@ final class LPlayer implements Listener
                 }*/
                 break;
             case $pk instanceof EmotePacket:
-                $emoteId = $pk->getEmoteId();
-                (new Network())->getServerPM()->broadcastPacket($pl->getViewers(), EmotePacket::create($pl->getId(), $emoteId, 1 << 0));
+                (new Network())->getServerPM()->broadcastPacket($pl->getViewers(), EmotePacket::create($pl->getId(), $pk->getEmoteId(), 1 << 0));
                 break;
         }
     }
@@ -108,13 +107,10 @@ final class LPlayer implements Listener
         $pn = $player->getName();
         $player->setLangSession();
         $player->setScoreboardSession();
-        /*TODO*/
 
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM settings WHERE player='$pn';"), function ($result) use ($pn) {
             $lang = "eng";
-            if (sizeof($result) === 0) {
-                AsyncQueue::submitQuery(new InsertQuery("INSERT INTO settings(player, language, scoreboard) VALUES ('$pn', '$lang', 1);"));
-            }
+            if (sizeof($result) === 0) AsyncQueue::submitQuery(new InsertQuery("INSERT INTO settings(player, language, scoreboard) VALUES ('$pn', '$lang', 1);"));
         });
     }
 
@@ -130,9 +126,7 @@ final class LPlayer implements Listener
         $pn = $player->getName();
 
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM settings WHERE player='$pn';"), function ($result) use ($player, $pn) {
-            if (sizeof($result) === 0) {
-                $player->kick(TextFormat::RED . "Join again to the server!");
-            }
+            if (sizeof($result) === 0) $player->kick(TextFormat::RED . "Join again to the server!");
             Session::$playerSettings[$pn] = $result[0];
             $player->getLangSession()->apply();
         });
@@ -206,7 +200,12 @@ final class LPlayer implements Listener
 
         if (Spawn_Data['is.enabled']) {
             if ($player->getY() <= Spawn_Data['world.void.minimum']) {
-                $player->teleport(new Position(Spawn_Data['pos.x'], Spawn_Data['pos.y'], Spawn_Data['pos.z'], $this->getNetwork()->getServerPM()->getLevelByName(Spawn_Data['world.name'])), Spawn_Data['player.yaw'], Spawn_Data['player.pitch']);
+                $player->teleport(new Position(Spawn_Data['pos.x'],
+                    Spawn_Data['pos.y'],
+                    Spawn_Data['pos.z'],
+                    $this->getNetwork()->getServerPM()->getLevelByName(Spawn_Data['world.name'])),
+                    Spawn_Data['player.yaw'],
+                    Spawn_Data['player.pitch']);
             }
         }
     }
@@ -218,15 +217,9 @@ final class LPlayer implements Listener
     {
         $player = $ev->getTransaction()->getSource();
 
-        if (Spawn_Data['is.enabled']) {
-            $level = Spawn_Data['world.name'];
-        } else {
-            $level = $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
-        }
+        $level = Spawn_Data['is.enabled'] ? Spawn_Data['world.name'] : $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
 
-        if ($player->getLevel()->getName() === $level) {
-            if (!$player->isOp()) $ev->setCancelled();
-        }
+        if ($player->getLevel()->getName() === $level) if (!$player->isOp()) $ev->setCancelled();
     }
 
     /**+
@@ -244,15 +237,9 @@ final class LPlayer implements Listener
     {
         $player = $ev->getPlayer();
 
-        if (Spawn_Data['is.enabled']) {
-            $level = Spawn_Data['world.name'];
-        } else {
-            $level = $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
-        }
+        $level = Spawn_Data['is.enabled'] ? Spawn_Data['world.name'] : $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
 
-        if ($player->getLevel()->getName() === $level) {
-            if (!$player->isOp()) $ev->setCancelled();
-        }
+        if ($player->getLevel()->getName() === $level) if (!$player->isOp()) $ev->setCancelled();
     }
 
     /**
@@ -262,14 +249,8 @@ final class LPlayer implements Listener
     {
         $player = $ev->getPlayer();
 
-        if (Spawn_Data['is.enabled']) {
-            $level = Spawn_Data['world.name'];
-        } else {
-            $level = $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
-        }
+        $level = Spawn_Data['is.enabled'] ? Spawn_Data['world.name'] : $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
 
-        if ($player->getLevel()->getName() === $level) {
-            if (!$player->isOp()) $ev->setCancelled();
-        }
+        if ($player->getLevel()->getName() === $level) if (!$player->isOp()) $ev->setCancelled();
     }
 }

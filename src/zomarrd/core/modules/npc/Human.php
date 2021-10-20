@@ -35,6 +35,10 @@ final class Human
         Entity::registerEntity(HumanEntity::class, true);
     }
 
+    /**
+     * @param string $name
+     * @param NetworkPlayer $player
+     */
     public static function spawn(string $name, NetworkPlayer $player): void
     {
         $level = $player->getLevel();
@@ -42,9 +46,7 @@ final class Human
         $skinData = $player->getSkin();
 
         foreach ($level->getEntities() as $entity) if ($entity instanceof HumanEntity) {
-            if ($entity->getSkin()->getSkinId() == $name) {
-                $entity->kill();
-            }
+            if ($entity->getSkin()->getSkinId() == $name) $entity->kill();
         }
 
         $nbt = new CompoundTag("", [
@@ -85,11 +87,7 @@ final class Human
     public static function applyName(string $name, string $text): void
     {
         foreach (Server::getInstance()->getLevels() as $level) {
-            foreach ($level->getEntities() as $entity) {
-                if ($entity instanceof HumanEntity) {
-                    if ($entity->getSkin()->getSkinId() == $name) $entity->setNameTag($text);
-                }
-            }
+            foreach ($level->getEntities() as $entity) if ($entity instanceof HumanEntity) if ($entity->getSkin()->getSkinId() == $name) $entity->setNameTag($text);
         }
     }
 
@@ -98,17 +96,9 @@ final class Human
      */
     public static function purge(string $name): void
     {
-        if (Spawn_Data['is.enabled']) {
-            $level = self::getNetwork()->getServerPM()->getLevelByName(Spawn_Data['world.name']);
-        } else {
-            $level = self::getNetwork()->getServerPM()->getDefaultLevel()->getName();
-        }
+        $level = Spawn_Data['is.enabled'] ? self::getNetwork()->getServerPM()->getLevelByName(Spawn_Data['world.name']) : self::getNetwork()->getServerPM()->getDefaultLevel()->getName();
 
-        foreach ($level->getEntities() as $entity) {
-            if ($entity instanceof HumanEntity) {
-                if ($entity->getSkin()->getSkinId() == $name) $entity->kill();
-            }
-        }
+        foreach ($level->getEntities() as $entity) if ($entity instanceof HumanEntity) if ($entity->getSkin()->getSkinId() == $name) $entity->kill();
     }
 
     public static function getId(HumanEntity $human): string

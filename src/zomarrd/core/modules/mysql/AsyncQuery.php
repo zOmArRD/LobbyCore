@@ -23,9 +23,7 @@ abstract class AsyncQuery extends AsyncTask
     public function onRun()
     {
         $this->query($mysqli = new mysqli($this->host, $this->user, $this->password, $this->database));
-        if ($mysqli->connect_error) {
-            die("Connection failed: " . $mysqli->connect_error);
-        }
+        if ($mysqli->connect_error) die("Connection failed: " . $mysqli->connect_error);
         $mysqli->close();
     }
 

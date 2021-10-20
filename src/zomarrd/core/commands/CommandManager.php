@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace zomarrd\core\commands;
 
+use zomarrd\core\commands\lang\LangCmd;
 use zomarrd\core\commands\npc\NpcCmd;
+use zomarrd\core\commands\server\ServerCmd;
 use zomarrd\core\LobbyCore;
 use zomarrd\core\network\Network;
 use pocketmine\command\Command as PMCommand;
@@ -42,7 +44,7 @@ abstract class CommandManager
      */
     public function load(): void
     {
-        foreach (["npc" => new NpcCmd()] as $prefix => $command) {
+        foreach (["npc" => new NpcCmd(), "lang" => new LangCmd(), "server" => new ServerCmd()] as $prefix => $command) {
             $this->register($prefix, $command);
             LobbyCore::$logger->info(PREFIX . "The command $prefix has been registered.");
         }

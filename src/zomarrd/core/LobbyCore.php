@@ -21,7 +21,6 @@ use zomarrd\core\modules\mysql\query\InsertQuery;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
-use zomarrd\core\network\server\ServerManager;
 use zomarrd\core\task\TaskManager;
 use const zOmArRD\PREFIX;
 
@@ -57,11 +56,7 @@ final class LobbyCore extends PluginBase
         Human::register();
 
         /* Avoid some network crashes when transferring packets */
-        foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) {
-            if ($interface instanceof RakLibInterface) {
-                $interface->setPacketLimit(PHP_INT_MAX);
-            }
-        }
+        foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) if ($interface instanceof RakLibInterface) $interface->setPacketLimit(PHP_INT_MAX);
 
         self::$logger->info(PREFIX . "§a" . $this->getNetwork()->getTextUtils()->uDecode("-<&QU9VEN(&QO861E9````"));
     }
@@ -105,8 +100,9 @@ final class LobbyCore extends PluginBase
 
     private function checkDb(): void
     {
-        self::$logger->info(PREFIX . "checking the database...");
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(ServerName VARCHAR(50) UNIQUE, Players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS settings(player VARCHAR(50) UNIQUE, language TEXT, scoreboard SMALLINT DEFAULT 1);"));
+        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS cosmetics(player VARCHAR(50) UNIQUE, particles TEXT);"));
+        self::$logger->info(PREFIX . "§a" . "Database verification completed.");
     }
 }

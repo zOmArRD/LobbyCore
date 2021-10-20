@@ -45,9 +45,7 @@ class UpdateRowQuery extends AsyncQuery
     public function query(mysqli $mysqli): void
     {
         $updates = [];
-        foreach (unserialize($this->updates) as $k => $v) {
-            $updates[] = "$k='$v'";
-        }
+        foreach (unserialize($this->updates) as $k => $v) $updates[] = "$k='$v'";
         $mysqli->query("UPDATE $this->table SET " . implode(",", $updates) . " WHERE $this->conditionKey='$this->conditionValue';");
     }
 }

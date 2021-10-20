@@ -12,6 +12,7 @@ lobby.text.position:
 
 # Put the title in the first array
 # ALERT: Only a maximum of 5 arrays is allowed, otherwise modify the code.
+# For example prefixes: {player.get.name} | You should know that they are very limited, and it is for personal use.
 lobby.text:
   - "§6§lGreek §fNetwork"
   - ""

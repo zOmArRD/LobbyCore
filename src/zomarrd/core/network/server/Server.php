@@ -36,6 +36,12 @@ class Server
         $this->update($server, $players, $isOnline, $isWhitelisted);
     }
 
+    /**
+     * @param string $server
+     * @param int $players
+     * @param bool $isOnline
+     * @param bool $isWhitelisted
+     */
     public function update(string $server = "Unknown", int $players = 0, bool $isOnline = false, bool $isWhitelisted = false): void
     {
         $this->setName($server);
@@ -44,6 +50,9 @@ class Server
         $this->setIsWhitelisted($isWhitelisted);
     }
 
+    /**
+     * Synchronize server data from database.
+     */
     public function sync(): void
     {
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers WHERE ServerName='$this->name';"), function ($rows) {

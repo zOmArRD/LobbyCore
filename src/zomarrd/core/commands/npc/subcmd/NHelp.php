@@ -25,8 +25,6 @@ final class NHelp implements ISubCommand
     public function executeSub(CommandSender $player, array $args): void
     {
         $player->sendMessage(PREFIX . "§bList of subcommands for Npc System :");
-        foreach (array_keys(NpcCmd::$subCmd) as $subCmd) {
-            $player->sendMessage("§7- §a/npc {$subCmd}");
-        }
+        foreach (array_keys(NpcCmd::$subCmd) as $subCmd) $player->sendMessage("§7- §a/npc $subCmd");
     }
 }

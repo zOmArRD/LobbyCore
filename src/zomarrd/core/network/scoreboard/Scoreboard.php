@@ -35,9 +35,7 @@ final class Scoreboard extends ScoreboardAPI
         $pn = $this->getPlayer()->getName();
         if (isset(Session::$playerSettings[$pn]["scoreboard"])) {
             $scData = Session::$playerSettings[$pn];
-            if (!(bool)$scData["scoreboard"]) {
-                return;
-            }
+            if (!(bool)$scData["scoreboard"]) return;
         }
 
         $config = $this->getNetwork()->getResourceManager()->getArchive("scoreboard.yml");
@@ -106,10 +104,7 @@ final class Scoreboard extends ScoreboardAPI
         $keys = array_keys($data);
         $values = array_values($data);
 
-        for ($i = 0; $i < count($keys); $i++) {
-            $msg = str_replace($keys[$i], (string)$values[$i], $msg);
-        }
-
+        for ($i = 0; $i < count($keys); $i++) $msg = str_replace($keys[$i], (string)$values[$i], $msg);
         return $msg;
     }
 }
