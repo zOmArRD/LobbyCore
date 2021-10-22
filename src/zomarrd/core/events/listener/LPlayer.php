@@ -30,6 +30,7 @@ use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\utils\TextFormat;
 use ReflectionClass;
 use ReflectionException;
+use zomarrd\core\modules\cosmetics\Cosmetics;
 use zomarrd\core\modules\floatingtext\FloatingTextManager;
 use zomarrd\core\modules\mysql\AsyncQueue;
 use zomarrd\core\modules\mysql\query\InsertQuery;
@@ -107,17 +108,22 @@ final class LPlayer implements Listener
         $pn = $player->getName();
         $player->setLangSession();
         $player->setScoreboardSession();
+        $player->setCosmeticsSession();
 
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM settings WHERE player='$pn';"), function ($result) use ($pn) {
             $lang = "eng";
             if (sizeof($result) === 0) AsyncQueue::submitQuery(new InsertQuery("INSERT INTO settings(player, language, scoreboard) VALUES ('$pn', '$lang', 1);"));
+        });
+
+        AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM cosmetics WHERE player='$pn';"), function ($result) use ($pn) {
+            if (sizeof($result) === 0) AsyncQueue::submitQuery(new InsertQuery("INSERT INTO settings(player) VALUES ('$pn');"));
         });
     }
 
     /**
      * @param PlayerLoginEvent $ev
      */
-    public function onLoging(PlayerLoginEvent $ev): void
+    public function onLogin(PlayerLoginEvent $ev): void
     {
         $player = $ev->getPlayer();
 
@@ -129,6 +135,11 @@ final class LPlayer implements Listener
             if (sizeof($result) === 0) $player->kick(TextFormat::RED . "Join again to the server!");
             Session::$playerSettings[$pn] = $result[0];
             $player->getLangSession()->apply();
+        });
+
+        AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM cosmetics WHERE player='$pn';"), function ($result) use ($player, $pn){
+            Cosmetics::$db[$pn] = $result[0];
+            $player->getCosmeticsSession()->applyCosmetics();
         });
 
         $this->login[$pn] = 1;
