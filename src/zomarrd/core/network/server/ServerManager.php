@@ -58,6 +58,7 @@ final class ServerManager
         $currentServerName = $this->getConfig()->get('current.server');
         AsyncQueue::submitQuery(new RegisterServerQuery($currentServerName));
         LobbyCore::$logger->info(PREFIX . "Registering the server in the database");
+        sleep(1); // I DON'T KNOW REALlY BRO
         $this->reloadServers();
         $this->getNetwork()->getTaskScheduler()->scheduleRepeatingTask(new ClosureTask(function () use ($currentServerName): void {
             $players = count(LobbyCore::getInstance()->getServer()->getOnlinePlayers());
@@ -83,8 +84,8 @@ final class ServerManager
         $currentServerName = self::getConfig()->get('current.server');
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers"), function ($rows) use ($currentServerName) {
             foreach ($rows as $row) {
-                $server = new Server($row["ServerName"], (int)$row["Players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
-                if ($row["ServerName"] === $currentServerName) {
+                $server = new Server($row["server"], (int)$row["players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
+                if ($row["server"] === $currentServerName) {
                     self::$currentServer = $server;
                     LobbyCore::$logger->info(PREFIX . "The server has been registered in the database.");
                 } else {
