@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace zomarrd\core\events;
 
 use zomarrd\core\events\listener\InteractListener;
-use zomarrd\core\events\listener\LPlayer;
+use zomarrd\core\events\listener\PlayerListener;
 use zomarrd\core\LobbyCore;
 use const zOmArRD\PREFIX;
 
@@ -29,7 +29,7 @@ final class EventsManager extends Events
      */
     public function loadEvents(): void
     {
-        foreach ([new LPlayer(), new InteractListener()] as $listener) $this->register($listener);
+        foreach ([new PlayerListener(), new InteractListener()] as $listener) $this->register($listener);
         LobbyCore::$logger->info(PREFIX . "the events have been registered!");
     }
 }

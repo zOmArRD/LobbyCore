@@ -40,9 +40,10 @@ use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\session\Session;
 use const zOmArRD\Spawn_Data;
 
-final class LPlayer implements Listener
+final class PlayerListener implements Listener
 {
     /** @var array */
+    /* This is used to prevent the player from falling into the void. */
     private array $login, $join, $move;
 
     /**
@@ -166,7 +167,7 @@ final class LPlayer implements Listener
         }
 
         $player->showScreenAnimation(28);
-        $player->sendTitle("§l§6Greek §fNetwork", "§fwelcome §6{$player->getName()}", 20, 30, 20);
+        $player->sendTitle("§l§6Greek §fNetwork", "§f" . "welcome §6{$player->getName()}", 20, 30, 20);
         new FloatingTextManager($player);
     }
 
