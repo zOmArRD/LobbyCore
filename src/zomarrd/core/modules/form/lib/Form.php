@@ -39,9 +39,7 @@ abstract class Form implements IForm
     {
         $this->processData($data);
         $callable = $this->getCallable();
-        if ($callable !== null) {
-            $callable($player, $data);
-        }
+        if ($callable !== null) $callable($player, $data);
     }
 
     public function processData(&$data): void

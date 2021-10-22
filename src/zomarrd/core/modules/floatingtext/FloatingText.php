@@ -42,10 +42,7 @@ abstract class FloatingText
         $pk->entityUniqueId = $eid;
         $pk->position = $vector3;
         $pk->item = ItemStackWrapper::legacy(Item::get(0));
-        $pk->metadata = [
-            Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, 1 << Entity::DATA_FLAG_IMMOBILE],
-            Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0]
-        ];
+        $pk->metadata = [Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, 1 << Entity::DATA_FLAG_IMMOBILE], Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0]];
 
         self::$texts[$eid] = $pk;
 

@@ -27,9 +27,7 @@ class CustomForm extends Form
     {
         if (is_array($data)) {
             $new = [];
-            foreach ($data as $i => $v) {
-                $new[$this->labelMap[$i]] = $v;
-            }
+            foreach ($data as $i => $v) $new[$this->labelMap[$i]] = $v;
             $data = $new;
         }
     }
@@ -53,9 +51,7 @@ class CustomForm extends Form
     public function addToggle(string $text, bool $default = null, ?string $label = null): void
     {
         $content = ["type" => "toggle", "text" => $text];
-        if ($default !== null) {
-            $content["default"] = $default;
-        }
+        if ($default !== null) $content["default"] = $default;
         $this->addContent($content);
         $this->labelMap[] = $label ?? count($this->labelMap);
     }
@@ -63,12 +59,8 @@ class CustomForm extends Form
     public function addSlider(string $text, int $min, int $max, int $step = -1, int $default = -1, ?string $label = null): void
     {
         $content = ["type" => "slider", "text" => $text, "min" => $min, "max" => $max];
-        if ($step !== -1) {
-            $content["step"] = $step;
-        }
-        if ($default !== -1) {
-            $content["default"] = $default;
-        }
+        if ($step !== -1) $content["step"] = $step;
+        if ($default !== -1) $content["default"] = $default;
         $this->addContent($content);
         $this->labelMap[] = $label ?? count($this->labelMap);
     }
@@ -76,9 +68,7 @@ class CustomForm extends Form
     public function addStepSlider(string $text, array $steps, int $defaultIndex = -1, ?string $label = null): void
     {
         $content = ["type" => "step_slider", "text" => $text, "steps" => $steps];
-        if ($defaultIndex !== -1) {
-            $content["default"] = $defaultIndex;
-        }
+        if ($defaultIndex !== -1) $content["default"] = $defaultIndex;
         $this->addContent($content);
         $this->labelMap[] = $label ?? count($this->labelMap);
     }

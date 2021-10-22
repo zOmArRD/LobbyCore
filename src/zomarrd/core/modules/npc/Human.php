@@ -45,9 +45,7 @@ final class Human
         $position = $player->getPosition();
         $skinData = $player->getSkin();
 
-        foreach ($level->getEntities() as $entity) if ($entity instanceof HumanEntity) {
-            if ($entity->getSkin()->getSkinId() == $name) $entity->kill();
-        }
+        foreach ($level->getEntities() as $entity) if ($entity instanceof HumanEntity) if ($entity->getSkin()->getSkinId() == $name) $entity->kill();
 
         $nbt = new CompoundTag("", [
             new ListTag("Pos", [

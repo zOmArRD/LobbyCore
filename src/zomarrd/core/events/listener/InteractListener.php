@@ -70,12 +70,15 @@ final class InteractListener implements Listener
                 $timeToNexHit = 2;
                 $server = Human::getId($target);
                 if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
+
                     $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
+
                     try {
                         foreach ($config->get("servers.available") as $serverData) if ($server == $serverData['npc.id']) $player->transferServer($serverData['server.name']);
                     } catch (Exception $ex) {
                         if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                     }
+
                     $this->hitNpc[$player->getName()] = time();
                 }
                 break;

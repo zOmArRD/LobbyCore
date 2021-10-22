@@ -34,4 +34,7 @@ strings:
   # Navigator Form
   form.title.navigator: "{bold}{gray}» {gold}Greek {white}Network {gray}«"
   form.content.navigator: "{yellow}What server do you want to go to, {gold}{player.get.name}{yellow}?"
+
+  # Cosmetics Strings
+  cosmetics.message.error: "{red}An error has occurred loading your cosmetics!"
 ...

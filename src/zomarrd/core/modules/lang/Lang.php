@@ -17,12 +17,13 @@ use zomarrd\core\modules\form\lib\SimpleForm;
 use zomarrd\core\modules\mysql\AsyncQueue;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\network\Network;
+use zomarrd\core\network\player\IPlayer;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\session\Session;
 use zomarrd\core\network\utils\TextUtils;
 use const zOmArRD\PREFIX;
 
-final class LangManager
+final class Lang implements IPlayer
 {
     /** @var NetworkPlayer */
     private NetworkPlayer $player;
@@ -41,12 +42,17 @@ final class LangManager
         $this->player = $player;
     }
 
-    /**
-     * @return NetworkPlayer
-     */
     public function getPlayer(): NetworkPlayer
     {
         return $this->player;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlayerName(): string
+    {
+        return $this->getPlayer()->getName();
     }
 
     public function __construct(NetworkPlayer $player)
@@ -84,9 +90,7 @@ final class LangManager
         $pn = $this->getPlayer()->getName();
         if (isset(Session::$playerSettings[$pn])) {
             $data = Session::$playerSettings[$pn];
-            if ($data["language"] !== null && $data["language"] !== "null") {
-                $this->set($data["language"], false);
-            }
+            if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
         }
     }
 
@@ -143,7 +147,7 @@ final class LangManager
         $form->setTitle(TextUtils::replaceColor($this->getString("form.title.lang.selector")));
 
         try {
-            foreach (LangManager::$config->get("languages") as $lang) $form->addButton("§a" . $lang['name'], $form::IMAGE_TYPE_URL, $lang['icon'], $lang['ISOCode']);
+            foreach (Lang::$config->get("languages") as $lang) $form->addButton("§a" . $lang['name'], $form::IMAGE_TYPE_URL, $lang['icon'], $lang['ISOCode']);
         } catch (Exception $ex) {
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }

@@ -14,7 +14,7 @@ namespace zomarrd\core\network\data;
 use pocketmine\level\Level;
 use pocketmine\utils\Config;
 use zomarrd\core\LobbyCore;
-use zomarrd\core\modules\lang\LangManager;
+use zomarrd\core\modules\lang\Lang;
 use zomarrd\core\network\Network;
 use const zOmArRD\PREFIX;
 use const zOmArRD\Spawn_Data;
@@ -48,19 +48,17 @@ final class ResourcesManager
 
         if (Spawn_Data['is.enabled']) {
             $level = Spawn_Data['world.name'];
-            if (!$this->getNetwork()->getServerPM()->isLevelLoaded($level)) {
-                $this->getNetwork()->getServerPM()->loadLevel($level);
-            }
+            if (!$this->getNetwork()->getServerPM()->isLevelLoaded($level)) $this->getNetwork()->getServerPM()->loadLevel($level);
             $this->getNetwork()->getServerPM()->getLevelByName($level)->setTime(Level::TIME_DAY);
             $this->getNetwork()->getServerPM()->getLevelByName($level)->stopTime();
         }
 
-        LangManager::$config = $this->getArchive($configYml);
+        Lang::$config = $this->getArchive($configYml);
 
-        foreach (LangManager::$config->get("languages") as $language) {
+        foreach (Lang::$config->get("languages") as $language) {
             $iso = $language["ISOCode"];
             $this->getNetwork()->getPlugin()->saveResource("lang/$iso.yml");
-            LangManager::$lang[$iso] = new Config($this->getNetwork()->getPlugin()->getDataFolder() . "lang/$iso.yml");
+            Lang::$lang[$iso] = new Config($this->getNetwork()->getPlugin()->getDataFolder() . "lang/$iso.yml");
             LobbyCore::$logger->info(PREFIX . "Lang $iso " . $this->getNetwork()->getTextUtils()->uDecode("0:&%S(&)E96X@;&]A9&5D(0```"));
         }
 

@@ -20,7 +20,8 @@ use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\types\GameMode;
 use pocketmine\Player;
 use zomarrd\core\items\ItemsManager;
-use zomarrd\core\modules\lang\LangManager;
+use zomarrd\core\modules\cosmetics\Cosmetics;
+use zomarrd\core\modules\lang\Lang;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\scoreboard\Scoreboard;
 use zomarrd\core\network\utils\TextUtils;
@@ -37,23 +38,23 @@ final class NetworkPlayer extends Player
         return new Network();
     }
 
-    /** @var LangManager */
-    public LangManager $langSession;
+    /** @var Lang */
+    public Lang $langSession;
 
     /**
      * Sets the Language Session to the player.
      */
     public function setLangSession(): void
     {
-        $this->langSession = new LangManager($this);
+        $this->langSession = new Lang($this);
     }
 
     /**
      * Returns the session of the player's Lang class.
      *
-     * @return LangManager
+     * @return Lang
      */
-    public function getLangSession(): LangManager
+    public function getLangSession(): Lang
     {
         return $this->langSession;
     }
@@ -88,6 +89,22 @@ final class NetworkPlayer extends Player
     public function getScoreboardSession(): Scoreboard
     {
         return $this->scoreboardSession;
+    }
+
+    /** @var Cosmetics */
+    public Cosmetics $cosmeticsSession;
+
+    public function setCosmeticsSession(): void
+    {
+        $this->cosmeticsSession = new Cosmetics($this);
+    }
+
+    /**
+     * @return Cosmetics
+     */
+    public function getCosmeticsSession(): Cosmetics
+    {
+        return $this->cosmeticsSession;
     }
 
     public function setItem(int $index, Item $item): void
