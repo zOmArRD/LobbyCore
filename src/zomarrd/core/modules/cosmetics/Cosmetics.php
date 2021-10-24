@@ -69,7 +69,7 @@ final class Cosmetics implements IPlayer
     public function getMessageUpdated(string $cosmetic, string $type = "activate", string $cosmeticName = ""): string
     {
         $msg = $this->getPlayer()->getLangTranslated("cosmetics.message.$type");
-        return TextUtils::replaceVars($msg, ["{cosmetic}" => $cosmetic]) . "$cosmeticName";
+        return TextUtils::replaceVars($msg, ["{cosmetic}" => $cosmetic]) . " $cosmeticName";
     }
 
     /**

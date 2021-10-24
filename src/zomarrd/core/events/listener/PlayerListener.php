@@ -13,6 +13,7 @@ namespace zomarrd\core\events\listener;
 
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
@@ -115,7 +116,7 @@ final class PlayerListener implements Listener
         });
 
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM cosmetics WHERE player='$pn';"), function ($result) use ($pn) {
-            if (sizeof($result) === 0) AsyncQueue::submitQuery(new InsertQuery("INSERT INTO settings(player) VALUES ('$pn');"));
+            if (sizeof($result) === 0) AsyncQueue::submitQuery(new InsertQuery("INSERT INTO cosmetics(player) VALUES ('$pn');"));
         });
     }
 
@@ -262,5 +263,14 @@ final class PlayerListener implements Listener
         $level = Spawn_Data['is.enabled'] ? Spawn_Data['world.name'] : $this->getNetwork()->getServerPM()->getDefaultLevel()->getName();
 
         if ($player->getLevel()->getName() === $level) if (!$player->isOp()) $ev->setCancelled();
+    }
+
+    /**
+     * This here omg...
+     * @param LeavesDecayEvent $ev
+     */
+    public function leaves(LeavesDecayEvent $ev)
+    {
+        $ev->setCancelled();
     }
 }

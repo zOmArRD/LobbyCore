@@ -46,7 +46,6 @@ abstract class CommandManager
     {
         foreach (["npc" => new NpcCmd(), "lang" => new LangCmd(), "server" => new ServerCmd()] as $prefix => $command) {
             $this->register($prefix, $command);
-            LobbyCore::$logger->info(PREFIX . "The command $prefix has been registered.");
         }
     }
 }

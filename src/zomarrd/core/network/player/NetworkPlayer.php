@@ -66,8 +66,12 @@ final class NetworkPlayer extends Player
      */
     public function getLangTranslated(string $idString): string
     {
-        $session = $this->getLangSession();
-        return $this->getNetwork()->getTextUtils()->replaceColor($session->getString($idString));
+        try {
+            $session = $this->getLangSession();
+            return $this->getNetwork()->getTextUtils()->replaceColor($session->getString($idString));
+        } catch (\Exception) {
+            return "";
+        }
     }
 
     public function handleLevelSoundEvent(LevelSoundEventPacket $packet): bool
@@ -119,7 +123,7 @@ final class NetworkPlayer extends Player
         if (isset($inventory)) {
             $inventory->clearAll();
 
-            foreach (["item.navigator" => 0,"item.cosmetics" => 1 , "item.settings" => 8] as $item => $index) $this->setItem($index, ItemsManager::get($item, $this));
+            foreach (["item.navigator" => 0, "item.rod" => 1, "item.party" => 4,"item.cosmetics" => 7, "item.settings" => 8] as $item => $index) $this->setItem($index, ItemsManager::get($item, $this));
         }
     }
 

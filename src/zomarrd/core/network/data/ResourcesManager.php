@@ -32,7 +32,6 @@ final class ResourcesManager
 
         foreach (['config.yml', 'spawn.data.yml', 'network.data.yml', 'scoreboard.yml', 'npc.data.yml', 'floatingtext.data.yml'] as $data) {
             $this->getNetwork()->getPlugin()->saveResource($data);
-            LobbyCore::$logger->info("$data file has been saved");
         }
 
         $mainYml = $this->getArchive($configYml);
@@ -61,8 +60,6 @@ final class ResourcesManager
             Lang::$lang[$iso] = new Config($this->getNetwork()->getPlugin()->getDataFolder() . "lang/$iso.yml");
             LobbyCore::$logger->info(PREFIX . "Lang $iso " . $this->getNetwork()->getTextUtils()->uDecode("0:&%S(&)E96X@;&]A9&5D(0```"));
         }
-
-        LobbyCore::$logger->info(PREFIX . "§a" . "Variable values loaded correctly.");
     }
 
     private function getNetwork(): Network

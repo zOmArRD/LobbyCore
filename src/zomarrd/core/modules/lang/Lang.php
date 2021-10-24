@@ -14,6 +14,7 @@ namespace zomarrd\core\modules\lang;
 use Exception;
 use pocketmine\utils\Config;
 use zomarrd\core\modules\form\lib\SimpleForm;
+use zomarrd\core\modules\form\SettingsForm;
 use zomarrd\core\modules\mysql\AsyncQueue;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\network\Network;
@@ -132,7 +133,8 @@ final class Lang implements IPlayer
         $form = new SimpleForm(function (NetworkPlayer $player, $data) {
             if (isset($data)) {
                 if ($data == "back") {
-                    /* todo: return to Settings Form */
+                    new SettingsForm($player);
+                    return;
                 } elseif ($data == "close") return;
 
                 if ($this->get() !== $data) {
@@ -153,8 +155,8 @@ final class Lang implements IPlayer
         }
 
         if ($type == "with.back.button") {
-            $form->addButton($this->getString("form.button.back"), $form::IMAGE_TYPE_PATH, "", "back");
-        } else $form->addButton($this->getString("form.button.close"), $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
+            $form->addButton($player->getLangTranslated("form.button.back"), $form::IMAGE_TYPE_PATH, "", "back");
+        } else $form->addButton($player->getLangTranslated("form.button.close"), $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
 
         $player->sendForm($form);
     }

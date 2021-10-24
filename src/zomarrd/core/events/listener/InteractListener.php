@@ -19,7 +19,9 @@ use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use zomarrd\core\items\ItemsManager;
+use zomarrd\core\modules\form\CosmeticsForm;
 use zomarrd\core\modules\form\NavigatorForm;
+use zomarrd\core\modules\form\SettingsForm;
 use zomarrd\core\modules\npc\entity\HumanEntity;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
@@ -42,7 +44,8 @@ final class InteractListener implements Listener
         $player = $event->getPlayer();
         $pk = $event->getPacket();
 
-        if (!$player instanceof NetworkPlayer && !$pk instanceof InventoryTransactionPacket) return;
+        if (!$player instanceof NetworkPlayer) return;
+        if (!$pk instanceof InventoryTransactionPacket) return;
 
         if ($pk->trData instanceof UseItemTransactionData) {
             switch ($pk->trData->getActionType()) {
@@ -55,6 +58,12 @@ final class InteractListener implements Listener
                         switch (true) {
                             case $item->equals(ItemsManager::get("item.navigator", $player)):
                                 new NavigatorForm($player);
+                                break;
+                            case $item->equals(ItemsManager::get("item.cosmetics", $player)):
+                                new CosmeticsForm($player);
+                                break;
+                            case $item->equals(ItemsManager::get("item.settings", $player)):
+                                new SettingsForm($player);
                                 break;
                         }
                         $this->itemCountDown[$player->getName()] = time();
@@ -84,4 +93,54 @@ final class InteractListener implements Listener
                 break;
         }
     }
+
+    /*public function interact(DataPacketReceiveEvent $event)
+    {
+        $player = $event->getPlayer();
+        $pk = $event->getPacket();
+
+        if (!$player instanceof NetworkPlayer) return;
+        if (!$pk instanceof InventoryTransactionPacket) return;
+
+        if ($pk->trData instanceof UseItemTransactionData) {
+            switch ($pk->trData->getActionType()) {
+                case UseItemTransactionData::ACTION_CLICK_AIR:
+                case UseItemTransactionData::ACTION_CLICK_BLOCK:
+                    $item = $player->getInventory()->getItemInHand();
+                    $countdown = 1.5;
+                    if (!isset($this->itemCountDown[$player->getName()]) or time() - $this->itemCountDown[$player->getName()] >= $countdown) {
+                        switch (true) {
+                            case $item->equals(ItemsManager::get("item.navigator", $player)):
+                                new NavigatorForm($player);
+                                break;
+                        }
+                        $this->itemCountDown[$player->getName()] = time();
+                        return;
+                    }
+                    break;
+            }
+        } elseif ($pk->trData instanceof UseItemOnEntityTransactionData) {
+            switch ($pk->trData->getActionType()) {
+                case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
+                case UseItemOnEntityTransactionData::ACTION_ATTACK:
+                case UseItemOnEntityTransactionData::ACTION_INTERACT:
+                    $target = $player->level->getEntity($pk->trData->getEntityRuntimeId());
+                    if (!$target instanceof HumanEntity) return;
+                    $timeToNexHit = 2;
+                    $server = Human::getId($target);
+                    if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
+                        switch ($server) {
+                            case "hcf":
+                                $player->transferServer("HCF");
+                                break;
+                            case "practice":
+                                $player->transferServer("Practice");
+                                break;
+                        }
+                        $this->hitNpc[$player->getName()] = time();
+                    }
+                    break;
+            }
+        }
+    }*/
 }

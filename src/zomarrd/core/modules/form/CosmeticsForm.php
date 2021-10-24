@@ -103,7 +103,6 @@ final class CosmeticsForm
 
         $images = [
             "remove" => "textures/ui/book_trash_default",
-            "lava.splash" => "textures/ui/refresh_hover"
         ];
 
         $form->setTitle(TextUtils::replaceColor("{bold}{gray}» {gold}Particles Menu {gray}«"));
@@ -111,7 +110,8 @@ final class CosmeticsForm
 
         $form->addButton(TextUtils::replaceColor("{red}disable particles"), 0, $images['remove'], 'disable');
 
-        $this->customButton($form, "Lava (Splash)", [0, $images['lava.splash']], "lava.splash", "particles");
+        $this->customButton($form, "Lava (Splash)", "lava.splash", "particles");
+        $this->customButton($form, "Water (Splash)", "water.splash", "particles");
 
         $form->addButton($player->getLangTranslated("form.button.back"), 0, "", 'back');
         $player->sendForm($form);
@@ -120,11 +120,11 @@ final class CosmeticsForm
     /**
      * @param SimpleForm  $form
      * @param string      $buttonName
-     * @param array       $imagenData
+     * @param array       $imageData
      * @param string|null $label
      * @param string      $type
      */
-    public function customButton(SimpleForm $form, string $buttonName, array $imagenData, ?string $label, string $type): void
+    public function customButton(SimpleForm $form, string $buttonName, ?string $label, string $type, array $imageData = [0, ""],): void
     {
         $name = $buttonName;
         $player = $this->getPlayer();
@@ -135,6 +135,6 @@ final class CosmeticsForm
             $name .= TextFormat::EOL . TextUtils::replaceColor($player->getLangTranslated("form.button.unlocked"));
         }
 
-        $form->addButton($name, $imagenData[0], $imagenData[1], $label);
+        $form->addButton($name, $imageData[0], $imageData[1], $label);
     }
 }

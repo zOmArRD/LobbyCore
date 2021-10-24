@@ -17,19 +17,26 @@ strings:
   form.button.unlocked: "{green}UnLocked"
 
   # Lang Selector Strings
-  form.title.lang.selector: "Choose your language:"
+  form.title.lang.selector: "{bold}{gray}» {green}Language Settings {gray}{bold}«"
   message.lang.set.done: "{green}Your language has been changed to English!"
   message.lang.set.fail: "{red}Your language could not be changed!"
 
+  # Settings Form Strings
+  form.title.settings: "{bold}{gray}» {green}Player Settings {gray}{bold}«"
+  form.button.change.lang: "Change your language"
+  form.buton.configure.scoreboard: "Configure the Scoreboard"
+
   # Scoreboard Setting Strings
-  form.title.scoreboard: "Scoreboard Settings"
+  form.title.scoreboard: "{bold}{gray}» {green}Scoreboard Settings {gray}{bold}«"
   message.scoreboard.updated: "{green}Your Scoreboard settings have been updated."
+  message.scoreboard.cant.updated: "{red}Unable to update scoreboard settings."
 
   # Items name
   item.navigator: "{bold}{gray}» {reset}{gold}Servers {gray}(Use) {bold}«"
   item.settings: "{bold}{gray}» {reset}{gold}Settings {gray}(Use) {bold}«"
   item.party: "{bold}{gray}» {reset}{gold}Party {gray}(Click) {bold}«"
   item.cosmetics: "{bold}{gray}» {reset}{gold}Cosmetics {gray}(Click) {bold}«"
+  item.rod: "{bold}{gray}» {reset}{gold}Fly Rod {gray}(Click) {bold}«"
 
   # Navigator Form
   form.title.navigator: "{bold}{gray}» {gold}Greek {white}Network {gray}«"

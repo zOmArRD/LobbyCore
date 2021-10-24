@@ -42,6 +42,8 @@ final class ItemsManager
             "item.navigator" => self::load(ItemIds::COMPASS, $player->getLangTranslated("item.navigator")),
             "item.settings" => self::load(ItemIds::MOB_HEAD, $player->getLangTranslated("item.settings")),
             "item.cosmetics" => self::load(BlockIds::ENDER_CHEST, $player->getLangTranslated("item.cosmetics")),
+            "item.party" => self::load(ItemIds::NAME_TAG, $player->getLangTranslated("item.party")),
+            "item.rod" => self::load(ItemIds::FISHING_ROD, $player->getLangTranslated("item.rod")),
             default => Item::get(BlockIds::AIR),
         };
     }

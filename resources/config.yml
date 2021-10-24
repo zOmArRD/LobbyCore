@@ -8,16 +8,16 @@ prefix: "{bold}{gold}G{white}N {gray}»{reset} "
 
 # Credentials for the MYSQL database.
 # It is extremely necessary.
-database:
-  user: root
-  password: omar
-  host: localhost
-  database: minecraft
 #database:
-#  user: zOmArRD
-#  password: greekdb22@
-#  host: 54.39.130.17
-#  database: greek_network
+#  user: root
+#  password: omar
+#  host: localhost
+#  database: minecraft
+database:
+  user: u5_lONV977RXV
+  password: jpXvi=cc8WYop+zLhNzKXX=w
+  host: hosting.greekmc.net
+  database: s5_test
 
 # Array with available languages.
 # If you want to add any other, you must also add the strings in the lang folder

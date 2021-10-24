@@ -67,7 +67,7 @@ final class NavigatorForm
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
 
-        $form->addButton(TextUtils::replaceColor($player->getLangTranslated('form.button.close')), 0, $images['close'], 'close');
+        $form->addButton($player->getLangTranslated('form.button.close'), 0, $images['close'], 'close');
         $player->sendForm($form);
     }
 }

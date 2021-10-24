@@ -13,6 +13,7 @@ namespace zomarrd\core\task;
 
 use Exception;
 use pocketmine\level\particle\LavaParticle;
+use pocketmine\level\particle\WaterParticle;
 use pocketmine\math\Vector3;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
@@ -47,7 +48,7 @@ final class GlobalTask extends Task
 
             /* Particles Section */
             if ($currentTick % 15 === 0) {
-                $this->setParticle("lava.particle");
+                $this->setParticle("lava.splash");
             }
 
             /* todo: finalize this! */
@@ -80,6 +81,17 @@ final class GlobalTask extends Task
                                 $z = cos($yaw) + $center->z;
                                 $y = $center->y;
                                 $level->addParticle(new LavaParticle(new Vector3($x, $y + 1.5, $z)));
+                            }
+                        }
+                        break;
+                    case "water.splash":
+                        if (Cosmetics::$particles[$pn] === "water.splash") {
+                            $center = new Vector3($x, $y, $z);
+                            for ($yaw = 0; $yaw <= 10; $yaw += (M_PI * 2) / 20) {
+                                $x = -sin($yaw) + $center->x;
+                                $z = cos($yaw) + $center->z;
+                                $y = $center->y;
+                                $level->addParticle(new WaterParticle(new Vector3($x, $y + 1.5, $z)));
                             }
                         }
                         break;
