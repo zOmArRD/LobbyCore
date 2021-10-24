@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\core\modules\form;
 
+use zomarrd\core\modules\form\lib\SimpleForm;
 use zomarrd\core\network\player\NetworkPlayer;
 
 final class SettingsForm
@@ -25,6 +26,7 @@ final class SettingsForm
     public function setPlayer(NetworkPlayer $player): void
     {
         $this->player = $player;
+        $this->show();
     }
 
     /**
@@ -40,8 +42,34 @@ final class SettingsForm
         $this->setPlayer($player);
     }
 
-    private function show(): void
+    public function show(): void
     {
+        $player = $this->getPlayer();
 
+        $form = new SimpleForm(function (NetworkPlayer $player, $data) {
+            if (isset($data)) {
+
+                switch ($data) {
+                    case "close":
+                        return;
+                    case "change.lang":
+                        $player->getLangSession()->showForm();
+                        break;
+                }
+            }
+        });
+
+
+        $images = [
+            "language" => "textures/ui/language_glyph_color",
+            "close" => "textures/gui/newgui/anvil-crossout",
+        ];
+
+        $form->setTitle($player->getLangTranslated("form.title.settings"));
+
+        $form->addButton($player->getLangTranslated("form.button.change.lang"), $form::IMAGE_TYPE_PATH, $images['language'], 'change.lang');
+
+        $form->addButton($player->getLangTranslated("form.button.close"), $form::IMAGE_TYPE_PATH, $images['close'], 'close');
+        $player->sendForm($form);
     }
 }
