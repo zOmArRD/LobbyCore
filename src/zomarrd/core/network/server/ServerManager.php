@@ -49,13 +49,14 @@ final class ServerManager
     }
 
     /**
-     * It is the most important function...
-     * <b>It is in charge of registering the servers and verifying them </b>
+     * It is the most important function.
+     * <p></p>
+     * It is in charge of registering the servers and verifying them.
      */
     public function init(): void
     {
         /** @var string $currentServerName */
-        $currentServerName = $this->getConfig()->get('current.server');
+        $currentServerName = $this->getConfig()->get('current.server')['name'];
         AsyncQueue::submitQuery(new RegisterServerQuery($currentServerName));
         LobbyCore::$logger->info(PREFIX . "Registering the server in the database");
         sleep(1); // I DON'T KNOW REALlY BRO
@@ -81,7 +82,7 @@ final class ServerManager
         self::$servers = [];
 
         /** @var string $currentServerName */
-        $currentServerName = self::getConfig()->get('current.server');
+        $currentServerName = self::getConfig()->get('current.server')['name'];
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers"), function ($rows) use ($currentServerName) {
             foreach ($rows as $row) {
                 $server = new Server($row["server"], (int)$row["players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);

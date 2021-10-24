@@ -3,7 +3,10 @@
 # For Greek Network MC:Bedrock #
 ################################
 ---
-current.server: "Lobby-1"
+current.server:
+  name: "Lobby-1"
+  version: "1.17.40"
+  proxy: "NA-Proxy-01 (play.greekmc.net) DDOS FULL PROTECTED"
 
 # Array with the servers available on the network.
 #

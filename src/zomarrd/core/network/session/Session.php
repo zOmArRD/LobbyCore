@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace zomarrd\core\network\session;
 
+/**
+ * @todo: make a system party and methods here.
+ */
 class Session
 {
     /** @var array */

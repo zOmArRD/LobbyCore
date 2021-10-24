@@ -96,8 +96,6 @@ final class PlayerListener implements Listener
     }
 
     /**
-     * @todo finalize someone functions.
-     *
      * @param PlayerPreLoginEvent $ev
      */
     public function onPreLogin(PlayerPreLoginEvent $ev): void

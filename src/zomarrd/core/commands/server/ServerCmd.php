@@ -35,10 +35,10 @@ class ServerCmd extends Command
         $archive = $this->getNetwork()->getResourceManager()->getArchive("network.data.yml");
 
         $sender->sendMessage("§l§f» §6Greek §fNetwork §7| §r§aServer Info §l§f«". $br .
-            "§bCurrent Server: §f{$archive->get("current.server")}" . $br.
+            "§bCurrent Server: §f{$archive->get("current.server")['name']}" . $br.
             "§bPlayers: §f" . count($this->getNetwork()->getServerPM()->getOnlinePlayers()) . "/{$this->getNetwork()->getServerPM()->getMaxPlayers()}" . $br .
-            "§bVersion: §f1.0.0" . $br .
-            "§bProxy: §fNA-Proxy-01 (play.greekmc.net)");
+            "§bVersion: §f{$archive->get("current.server")['version']}" . $br .
+            "§bProxy: §f{$archive->get("current.server")['proxy']}");
     }
 
     /**
