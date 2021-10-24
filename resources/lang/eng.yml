@@ -37,4 +37,7 @@ strings:
 
   # Cosmetics Strings
   cosmetics.message.error: "{red}An error has occurred loading your cosmetics!"
+  cosmetics.message.activate: "{green}You have activated the cosmetic {gold}{cosmetic}"
+  cosmetics.message.deactivate: "{red}You have deactivated the cosmetic {gold}{cosmetic}"
+  cosmetics.message.noperms: "{red}You do not have permission to use the cosmetic {gray}({gold}{cosmetic}{gray})"
 ...

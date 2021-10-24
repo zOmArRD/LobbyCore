@@ -68,7 +68,7 @@ final class Cosmetics implements IPlayer
      */
     public function getMessageUpdated(string $cosmetic, string $type = "activate", string $cosmeticName = ""): string
     {
-        $msg = $this->getPlayer()->getLangTranslated("message.$type");
+        $msg = $this->getPlayer()->getLangTranslated("cosmetics.message.$type");
         return TextUtils::replaceVars($msg, ["{cosmetic}" => $cosmetic]) . "$cosmeticName";
     }
 
@@ -100,8 +100,8 @@ final class Cosmetics implements IPlayer
     public function removeParticle(bool $save = true): void
     {
         if (isset(self::$particles[$this->getPlayerName()])) unset(self::$particles[$this->getPlayerName()]);
-
         if ($save) $this->updateDatabase(["particles" => "null"]);
+        $this->getPlayer()->sendMessage(PREFIX . $this->getMessageUpdated('Particles', 'deactivate'));
     }
 
 
@@ -109,7 +109,6 @@ final class Cosmetics implements IPlayer
     {
         if (isset(self::$db[$this->getPlayerName()])) {
             $data = Cosmetics::$db[$this->getPlayerName()];
-
             if ($data["particles"] !== null && $data["particles"] !== "null") $this->setParticle($data["particles"], false);
         } else {
             $this->getPlayer()->sendMessage(PREFIX . $this->getPlayer()->getLangTranslated("cosmetics.message.error"));

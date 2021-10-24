@@ -12,12 +12,16 @@ declare(strict_types=1);
 namespace zomarrd\core\task;
 
 use Exception;
+use pocketmine\level\particle\LavaParticle;
+use pocketmine\math\Vector3;
 use pocketmine\scheduler\Task;
+use pocketmine\Server;
 use zomarrd\core\LobbyCore;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\server\ServerManager;
+use zomarrd\core\modules\cosmetics\Cosmetics;
 
 final class GlobalTask extends Task
 {
@@ -40,14 +44,47 @@ final class GlobalTask extends Task
             /* Npc Section */
             Human::applyName("hcf", ServerManager::getServerPlayers("HCF"));
             Human::applyName("practice", ServerManager::getServerPlayers("Practice"));
+
+            /* Particles Section */
+            if ($currentTick % 15 === 0) {
+                $this->setParticle("lava.particle");
+            }
+
+            /* todo: finalize this! */
         }
     }
 
     /**
      * @return Network
      */
-    public function getNetwork(): Network
+    private function getNetwork(): Network
     {
         return new Network();
+    }
+
+    private function setParticle(string $particle): void
+    {
+        foreach (Server::getInstance()->getOnlinePlayers() as $player) {
+            $level = $player->getLevel();
+            $x = $player->getX(); $y = $player->getY(); $z = $player->getZ();
+            $location = $player->getLocation();
+            $pn = $player->getName();
+
+            if (isset(Cosmetics::$particles[$pn])) {
+                switch ($particle) {
+                    case "lava.splash":
+                        if (Cosmetics::$particles[$pn] === "lava.splash") {
+                            $center = new Vector3($x, $y, $z);
+                            for ($yaw = 0; $yaw <= 10; $yaw += (M_PI * 2) / 20) {
+                                $x = -sin($yaw) + $center->x;
+                                $z = cos($yaw) + $center->z;
+                                $y = $center->y;
+                                $level->addParticle(new LavaParticle(new Vector3($x, $y + 1.5, $z)));
+                            }
+                        }
+                        break;
+                }
+            }
+        }
     }
 }
