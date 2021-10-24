@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\core;
 
+use pocketmine\network\mcpe\protocol\types\SkinAdapterSingleton;
 use pocketmine\network\mcpe\RakLibInterface;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
@@ -21,6 +22,7 @@ use zomarrd\core\modules\mysql\query\InsertQuery;
 use zomarrd\core\modules\mysql\query\UpdateRowQuery;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
+use zomarrd\core\network\player\skin\SkinAdapter;
 use zomarrd\core\task\TaskManager;
 use const zOmArRD\PREFIX;
 
@@ -54,6 +56,9 @@ final class LobbyCore extends PluginBase
 
         /* Register the custom entity of Human. */
         Human::register();
+
+        /* Monjang Skin Support */
+        SkinAdapterSingleton::set(new SkinAdapter());
 
         /* Avoid some network crashes when transferring packets */
         foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) if ($interface instanceof RakLibInterface) $interface->setPacketLimit(PHP_INT_MAX);
