@@ -154,9 +154,7 @@ final class Lang implements IPlayer
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
 
-        if ($type == "with.back.button") {
-            $form->addButton($player->getLangTranslated("form.button.back"), $form::IMAGE_TYPE_PATH, "", "back");
-        } else $form->addButton($player->getLangTranslated("form.button.close"), $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
+        if ($type == "with.back.button") $form->addButton($player->getLangTranslated("form.button.back"), $form::IMAGE_TYPE_PATH, "", "back"); else $form->addButton($player->getLangTranslated("form.button.close"), $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
 
         $player->sendForm($form);
     }

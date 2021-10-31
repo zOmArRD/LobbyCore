@@ -11,13 +11,11 @@ declare(strict_types=1);
 
 namespace zomarrd\core\commands;
 
+use pocketmine\command\Command as PMCommand;
 use zomarrd\core\commands\lang\LangCmd;
 use zomarrd\core\commands\npc\NpcCmd;
 use zomarrd\core\commands\server\ServerCmd;
-use zomarrd\core\LobbyCore;
 use zomarrd\core\network\Network;
-use pocketmine\command\Command as PMCommand;
-use const zOmArRD\PREFIX;
 
 abstract class CommandManager
 {
@@ -44,8 +42,6 @@ abstract class CommandManager
      */
     public function load(): void
     {
-        foreach (["npc" => new NpcCmd(), "lang" => new LangCmd(), "server" => new ServerCmd()] as $prefix => $command) {
-            $this->register($prefix, $command);
-        }
+        foreach (["npc" => new NpcCmd(), "lang" => new LangCmd(), "server" => new ServerCmd()] as $prefix => $command) $this->register($prefix, $command);
     }
 }

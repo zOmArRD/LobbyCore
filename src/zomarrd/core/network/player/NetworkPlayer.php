@@ -14,7 +14,6 @@ namespace zomarrd\core\network\player;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\network\mcpe\protocol\types\GameMode;
@@ -164,9 +163,7 @@ final class NetworkPlayer extends Player
             } else {
                 $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is under maintenance"));
                 return;
-            } else {
-                $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is offline!"));
-            } else $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
+            } else $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}The server is offline!")); else $this->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
             return;
         }
     }

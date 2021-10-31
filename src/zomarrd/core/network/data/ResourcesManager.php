@@ -30,9 +30,7 @@ final class ResourcesManager
         @mkdir($this->getNetwork()->getPlugin()->getDataFolder());
         $configYml = "config.yml";
 
-        foreach (['config.yml', 'spawn.data.yml', 'network.data.yml', 'scoreboard.yml', 'npc.data.yml', 'floatingtext.data.yml'] as $data) {
-            $this->getNetwork()->getPlugin()->saveResource($data);
-        }
+        foreach (['config.yml', 'spawn.data.yml', 'network.data.yml', 'scoreboard.yml', 'npc.data.yml', 'floatingtext.data.yml'] as $data) $this->getNetwork()->getPlugin()->saveResource($data);
 
         $mainYml = $this->getArchive($configYml);
         $spawnData = $this->getArchive("spawn.data.yml");

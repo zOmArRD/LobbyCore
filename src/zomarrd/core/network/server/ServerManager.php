@@ -66,9 +66,7 @@ final class ServerManager
             $isWhitelist = (LobbyCore::getInstance()->getServer()->hasWhitelist() ? 1 : 0);
             AsyncQueue::submitQuery(new UpdateRowQuery(["Players" => "$players", "isWhitelisted" => "$isWhitelist"], "ServerName", $currentServerName, "servers"));
 
-            foreach (self::getServers() as $server) {
-                $server->sync();
-            }
+            foreach (self::getServers() as $server) $server->sync();
         }), self::REFRESH_TICKS);
     }
 
@@ -150,9 +148,7 @@ final class ServerManager
     {
         $servers = (new ServerManager)->getServers();
 
-        foreach ($servers as $server) if ($server->getName() == $target) {
-            return $server->isOnline() ? ("§a" . "PLAYING: §f" . $server->getPlayers()) : ("§c" . "OFFLINE");
-        }
+        foreach ($servers as $server) if ($server->getName() == $target) return $server->isOnline() ? ("§a" . "PLAYING: §f" . $server->getPlayers()) : ("§c" . "OFFLINE");
         return "§c" . "server.not.found";
     }
 }

@@ -79,68 +79,15 @@ final class InteractListener implements Listener
                 $timeToNexHit = 2;
                 $server = Human::getId($target);
                 if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
-
                     $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
-
                     try {
                         foreach ($config->get("servers.available") as $serverData) if ($server == $serverData['npc.id']) $player->transferServer($serverData['server.name']);
                     } catch (Exception $ex) {
                         if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                     }
-
                     $this->hitNpc[$player->getName()] = time();
                 }
                 break;
         }
     }
-
-    /*public function interact(DataPacketReceiveEvent $event)
-    {
-        $player = $event->getPlayer();
-        $pk = $event->getPacket();
-
-        if (!$player instanceof NetworkPlayer) return;
-        if (!$pk instanceof InventoryTransactionPacket) return;
-
-        if ($pk->trData instanceof UseItemTransactionData) {
-            switch ($pk->trData->getActionType()) {
-                case UseItemTransactionData::ACTION_CLICK_AIR:
-                case UseItemTransactionData::ACTION_CLICK_BLOCK:
-                    $item = $player->getInventory()->getItemInHand();
-                    $countdown = 1.5;
-                    if (!isset($this->itemCountDown[$player->getName()]) or time() - $this->itemCountDown[$player->getName()] >= $countdown) {
-                        switch (true) {
-                            case $item->equals(ItemsManager::get("item.navigator", $player)):
-                                new NavigatorForm($player);
-                                break;
-                        }
-                        $this->itemCountDown[$player->getName()] = time();
-                        return;
-                    }
-                    break;
-            }
-        } elseif ($pk->trData instanceof UseItemOnEntityTransactionData) {
-            switch ($pk->trData->getActionType()) {
-                case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
-                case UseItemOnEntityTransactionData::ACTION_ATTACK:
-                case UseItemOnEntityTransactionData::ACTION_INTERACT:
-                    $target = $player->level->getEntity($pk->trData->getEntityRuntimeId());
-                    if (!$target instanceof HumanEntity) return;
-                    $timeToNexHit = 2;
-                    $server = Human::getId($target);
-                    if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
-                        switch ($server) {
-                            case "hcf":
-                                $player->transferServer("HCF");
-                                break;
-                            case "practice":
-                                $player->transferServer("Practice");
-                                break;
-                        }
-                        $this->hitNpc[$player->getName()] = time();
-                    }
-                    break;
-            }
-        }
-    }*/
 }

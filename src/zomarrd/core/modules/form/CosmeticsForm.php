@@ -81,23 +81,19 @@ final class CosmeticsForm
         $player = $this->getPlayer();
 
         $form = new SimpleForm(function (NetworkPlayer $player, $data) {
-            if (isset($data)) {
-                switch ($data) {
-                    case "back":
-                        $this->show();
-                        break;
-                    case "disable":
-                        $player->getCosmeticsSession()->removeParticle();
-                        break;
-                    default:
-                        if ($player->hasPermission("cosmetics.particles.$data")) {
-                            $player->getCosmeticsSession()->setParticle($data);
-                            $player->sendMessage(PREFIX . $player->getCosmeticsSession()->getMessageUpdated("particles", "activate", $data));
-                        } else {
-                            $player->sendMessage(PREFIX . $player->getCosmeticsSession()->getMessageUpdated("particles", "noperms"));
-                        }
-                        break;
-                }
+            if (isset($data)) switch ($data) {
+                case "back":
+                    $this->show();
+                    break;
+                case "disable":
+                    $player->getCosmeticsSession()->removeParticle();
+                    break;
+                default:
+                    if ($player->hasPermission("cosmetics.particles.$data")) {
+                        $player->getCosmeticsSession()->setParticle($data);
+                        $player->sendMessage(PREFIX . $player->getCosmeticsSession()->getMessageUpdated("particles", "activate", $data));
+                    } else $player->sendMessage(PREFIX . $player->getCosmeticsSession()->getMessageUpdated("particles", "noperms"));
+                    break;
             }
         });
 
@@ -129,11 +125,7 @@ final class CosmeticsForm
         $name = $buttonName;
         $player = $this->getPlayer();
 
-        if (!$player->hasPermission("cosmetics.$type.$label") or !$player->isOp()) {
-            $name .= TextFormat::EOL . TextUtils::replaceColor($player->getLangTranslated("form.button.locked"));
-        } else {
-            $name .= TextFormat::EOL . TextUtils::replaceColor($player->getLangTranslated("form.button.unlocked"));
-        }
+        $name = (!$player->hasPermission("cosmetics.$type.$label") or !$player->isOp()) ? $name . TextFormat::EOL . TextUtils::replaceColor($player->getLangTranslated("form.button.locked")) : $name . TextFormat::EOL . TextUtils::replaceColor($player->getLangTranslated("form.button.unlocked"));
 
         $form->addButton($name, $imageData[0], $imageData[1], $label);
     }

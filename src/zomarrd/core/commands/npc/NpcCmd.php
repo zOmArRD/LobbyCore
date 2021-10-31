@@ -32,9 +32,7 @@ final class NpcCmd extends Command
 
     private function registerSub(): void
     {
-        foreach (["help" => new NHelp(), "create" => new NCreate(), "purge" => new NPurge()] as $prefix => $subCmd) {
-            self::$subCmd[$prefix] = $subCmd;
-        }
+        foreach (["help" => new NHelp(), "create" => new NCreate(), "purge" => new NPurge()] as $prefix => $subCmd) self::$subCmd[$prefix] = $subCmd;
     }
 
     /**

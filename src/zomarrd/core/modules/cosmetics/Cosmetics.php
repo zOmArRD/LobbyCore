@@ -110,8 +110,6 @@ final class Cosmetics implements IPlayer
         if (isset(self::$db[$this->getPlayerName()])) {
             $data = Cosmetics::$db[$this->getPlayerName()];
             if ($data["particles"] !== null && $data["particles"] !== "null") $this->setParticle($data["particles"], false);
-        } else {
-            $this->getPlayer()->sendMessage(PREFIX . $this->getPlayer()->getLangTranslated("cosmetics.message.error"));
-        }
+        } else $this->getPlayer()->sendMessage(PREFIX . $this->getPlayer()->getLangTranslated("cosmetics.message.error"));
     }
 }

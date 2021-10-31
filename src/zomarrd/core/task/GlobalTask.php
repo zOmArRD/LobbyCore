@@ -18,11 +18,11 @@ use pocketmine\math\Vector3;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use zomarrd\core\LobbyCore;
+use zomarrd\core\modules\cosmetics\Cosmetics;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
 use zomarrd\core\network\player\NetworkPlayer;
 use zomarrd\core\network\server\ServerManager;
-use zomarrd\core\modules\cosmetics\Cosmetics;
 
 final class GlobalTask extends Task
 {
@@ -71,31 +71,29 @@ final class GlobalTask extends Task
             $location = $player->getLocation();
             $pn = $player->getName();
 
-            if (isset(Cosmetics::$particles[$pn])) {
-                switch ($particle) {
-                    case "lava.splash":
-                        if (Cosmetics::$particles[$pn] === "lava.splash") {
-                            $center = new Vector3($x, $y, $z);
-                            for ($yaw = 0; $yaw <= 10; $yaw += (M_PI * 2) / 20) {
-                                $x = -sin($yaw) + $center->x;
-                                $z = cos($yaw) + $center->z;
-                                $y = $center->y;
-                                $level->addParticle(new LavaParticle(new Vector3($x, $y + 1.5, $z)));
-                            }
+            if (isset(Cosmetics::$particles[$pn])) switch ($particle) {
+                case "lava.splash":
+                    if (Cosmetics::$particles[$pn] === "lava.splash") {
+                        $center = new Vector3($x, $y, $z);
+                        for ($yaw = 0; $yaw <= 10; $yaw += (M_PI * 2) / 20) {
+                            $x = -sin($yaw) + $center->x;
+                            $z = cos($yaw) + $center->z;
+                            $y = $center->y;
+                            $level->addParticle(new LavaParticle(new Vector3($x, $y + 1.5, $z)));
                         }
-                        break;
-                    case "water.splash":
-                        if (Cosmetics::$particles[$pn] === "water.splash") {
-                            $center = new Vector3($x, $y, $z);
-                            for ($yaw = 0; $yaw <= 10; $yaw += (M_PI * 2) / 20) {
-                                $x = -sin($yaw) + $center->x;
-                                $z = cos($yaw) + $center->z;
-                                $y = $center->y;
-                                $level->addParticle(new WaterParticle(new Vector3($x, $y + 1.5, $z)));
-                            }
+                    }
+                    break;
+                case "water.splash":
+                    if (Cosmetics::$particles[$pn] === "water.splash") {
+                        $center = new Vector3($x, $y, $z);
+                        for ($yaw = 0; $yaw <= 10; $yaw += (M_PI * 2) / 20) {
+                            $x = -sin($yaw) + $center->x;
+                            $z = cos($yaw) + $center->z;
+                            $y = $center->y;
+                            $level->addParticle(new WaterParticle(new Vector3($x, $y + 1.5, $z)));
                         }
-                        break;
-                }
+                    }
+                    break;
             }
         }
     }
