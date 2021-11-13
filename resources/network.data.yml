@@ -18,8 +18,20 @@ servers.available: # config for duels available.
     npc.id: "hcf"
     image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353571950632/image1.png"
     image.type: 1
+    category: "none"
   - server.name: "Practice"
     npc.id: "practice"
     image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353085407314/image0.png"
     image.type: 1
+    category: "none"
+  - server.name: "UHC"
+    npc.id: "uhc"
+    image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353085407314/image0.png"
+    image.type: 1
+    category: "uhc"
+  - server.name: "UHC-MEETUP"
+    npc.id: "uhc-meetup"
+    image.link: "https://cdn.discordapp.com/attachments/861039150756003871/892042353085407314/image0.png"
+    image.type: 1
+    category: "uhc"
 ...

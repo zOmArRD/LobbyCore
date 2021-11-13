@@ -22,6 +22,7 @@ use zomarrd\core\items\ItemsManager;
 use zomarrd\core\modules\form\CosmeticsForm;
 use zomarrd\core\modules\form\NavigatorForm;
 use zomarrd\core\modules\form\SettingsForm;
+use zomarrd\core\modules\form\UHCSelectorForm;
 use zomarrd\core\modules\npc\entity\HumanEntity;
 use zomarrd\core\modules\npc\Human;
 use zomarrd\core\network\Network;
@@ -81,7 +82,13 @@ final class InteractListener implements Listener
                 if (!isset($this->hitNpc[$player->getName()]) or time() - $this->hitNpc[$player->getName()] >= $timeToNexHit) {
                     $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
                     try {
-                        foreach ($config->get("servers.available") as $serverData) if ($server == $serverData['npc.id']) $player->transferServer($serverData['server.name']);
+                        foreach ($config->get("servers.available") as $serverData) {
+                            if ($serverData['uhc'] === "uhc") {
+                                new UHCSelectorForm($player);
+                                return;
+                            }
+                            if ($server == $serverData['npc.id']) $player->transferServer($serverData['server.name']);
+                        }
                     } catch (Exception $ex) {
                         if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                     }

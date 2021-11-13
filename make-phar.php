@@ -47,4 +47,3 @@ $phar->compressFiles(Phar::GZ);
 
 $phar->stopBuffering();
 echo "end." . PHP_EOL;
-

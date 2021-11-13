@@ -132,4 +132,12 @@ class Server
     {
         return $this->isWhitelisted;
     }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->isOnline() ? ("§a" . "PLAYING: §f" . $this->getPlayers()) : ("§c" . "OFFLINE");
+    }
 }

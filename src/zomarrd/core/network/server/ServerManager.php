@@ -141,14 +141,15 @@ final class ServerManager
 
     /**
      * @param string $target
-     *
-     * @return string
+     * @return Server|string
      */
-    public static function getServerPlayers(string $target): string
+    public static function getServer(string $target): Server|string
     {
         $servers = (new ServerManager)->getServers();
 
-        foreach ($servers as $server) if ($server->getName() == $target) return $server->isOnline() ? ("§a" . "PLAYING: §f" . $server->getPlayers()) : ("§c" . "OFFLINE");
+        foreach ($servers as $server) {
+            if ($server->getName() === $target) return $server;
+        }
         return "§c" . "server.not.found";
     }
 }

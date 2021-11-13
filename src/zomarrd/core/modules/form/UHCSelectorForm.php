@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 29/9/2021
+ * Date: 8/11/2021
  *
  * Copyright © 2021 Greek Network - All Rights Reserved.
  */
@@ -19,7 +19,7 @@ use zomarrd\core\network\server\ServerManager;
 use zomarrd\core\network\utils\TextUtils;
 use const zOmArRD\PREFIX;
 
-final class NavigatorForm
+final class UHCSelectorForm
 {
     public function __construct(NetworkPlayer $player)
     {
@@ -38,10 +38,9 @@ final class NavigatorForm
                 $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
                 try {
-                    foreach ($config->get("servers.available") as $serverData) {
+                    foreach ($config->get("servers.available") as $serverData) if ($serverData['uhc'] === "uhc") {
                         if ($data == $serverData['npc.id']) $player->transferServer($serverData['server.name']); else $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
-                        return;
-                    }
+                    } else $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
                 } catch (Exception $ex) {
                     if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                 }
@@ -57,12 +56,7 @@ final class NavigatorForm
         $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
         try {
-            foreach ($config->get("servers.available") as $button) {
-                $form->addButton("§6{$button['server.name']}" . "\n" . ServerManager::getServer($button['server.name'])->getStatus(),
-                    $button['image.type'],
-                    $button['image.link'],
-                    $button['server.name']);
-            }
+            foreach ($config->get("servers.available") as $serverData) if ($serverData['uhc'] === "uhc") $form->addButton("§6{$serverData['server.name']}" . "\n" . ServerManager::getServer($serverData['server.name'])->getStatus(), $serverData['image.type'], $serverData['image.link'], $serverData['server.name']);
         } catch (Exception $ex) {
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
