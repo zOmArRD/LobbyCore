@@ -38,13 +38,11 @@ final class UHCSelectorForm
                 $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
                 try {
-                    foreach ($config->get("servers.available") as $serverData) if ($serverData['uhc'] === "uhc") {
-                        if ($data == $serverData['npc.id']) $player->transferServer($serverData['server.name']); else $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
-                    } else $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
+                    foreach ($config->get("servers.available") as $serverData) $player->transferServer($serverData['server.name']);
                 } catch (Exception $ex) {
+                    $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
                     if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
                 }
-
             }
         });
 
@@ -56,7 +54,7 @@ final class UHCSelectorForm
         $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
         try {
-            foreach ($config->get("servers.available") as $serverData) if ($serverData['uhc'] === "uhc") $form->addButton("§6{$serverData['server.name']}" . "\n" . ServerManager::getServer($serverData['server.name'])->getStatus(), $serverData['image.type'], $serverData['image.link'], $serverData['server.name']);
+            foreach ($config->get("servers.available") as $serverData) if ($serverData['category'] === "uhc") $form->addButton("§6{$serverData['server.name']}" . "\n" . ServerManager::getServer($serverData['server.name'])->getStatus(), $serverData['image.type'], $serverData['image.link'], $serverData['server.name']);
         } catch (Exception $ex) {
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }

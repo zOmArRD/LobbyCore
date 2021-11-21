@@ -83,11 +83,13 @@ final class InteractListener implements Listener
                     $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
                     try {
                         foreach ($config->get("servers.available") as $serverData) {
-                            if ($serverData['uhc'] === "uhc") {
-                                new UHCSelectorForm($player);
-                                return;
+                            if ($server == $serverData['npc.id']) {
+                                if (!$serverData['category'] == "uhc") {
+                                    $player->transferServer($serverData['server.name']);
+                                } else {
+                                    new UHCSelectorForm($player);
+                                }
                             }
-                            if ($server == $serverData['npc.id']) $player->transferServer($serverData['server.name']);
                         }
                     } catch (Exception $ex) {
                         if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
