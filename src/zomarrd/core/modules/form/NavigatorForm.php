@@ -60,7 +60,7 @@ final class NavigatorForm
 
         try {
             foreach ($config->get("servers.available") as $button) {
-                $form->addButton("§6{$button['server.name']}" . "\n" . ServerManager::getServer($button['server.name'])->getStatus(), $button['image.type'], $button['image.link'], $button['server.name']);
+                $form->addButton("§6{$button['server.name']}" . "\n" . ServerManager::getStatus($button['server.name']), $button['image.type'], $button['image.link'], $button['server.name']);
             }
         } catch (Exception $ex) {
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");

@@ -141,15 +141,25 @@ final class ServerManager
 
     /**
      * @param string $target
-     * @return Server|string
+     * @return Server|null
      */
-    public static function getServer(string $target): Server|string
+    public static function getServer(string $target): ?Server
     {
         $servers = (new ServerManager)->getServers();
 
         foreach ($servers as $server) {
             if ($server->getName() === $target) return $server;
         }
-        return "§c" . "server.not.found";
+        return null;
+    }
+
+    /**
+     * @param string $server
+     * @return string
+     */
+    public static function getStatus(string $server): string
+    {
+        $server = self::getServer($server);
+        return $server !== null ? $server->getStatus() : "";
     }
 }

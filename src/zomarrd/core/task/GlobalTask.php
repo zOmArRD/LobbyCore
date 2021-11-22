@@ -43,8 +43,10 @@ final class GlobalTask extends Task
             }
 
             /* Npc Section */
-            Human::applyName("hcf", ServerManager::getServer("HCF")->getStatus());
-            Human::applyName("practice", ServerManager::getServer("Practice")->getStatus());
+            Human::applyName("hcf", ServerManager::getStatus("HCF"));
+            Human::applyName("practice", ServerManager::getStatus("Practice"));
+            Human::applyName("uhc", "UHC SERVERS NOW!!");
+
 
             /* Particles Section */
             if ($currentTick % 15 === 0) {

@@ -84,11 +84,11 @@ final class InteractListener implements Listener
                     try {
                         foreach ($config->get("servers.available") as $serverData) {
                             if ($server == $serverData['npc.id']) {
-                                if (!$serverData['category'] == "uhc") {
-                                    $player->transferServer($serverData['server.name']);
-                                } else {
+                                if ($serverData['category'] === "uhc") {
                                     new UHCSelectorForm($player);
+                                    return;
                                 }
+                                $player->transferServer($serverData['server.name']);
                             }
                         }
                     } catch (Exception $ex) {

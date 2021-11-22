@@ -38,7 +38,11 @@ final class UHCSelectorForm
                 $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
                 try {
-                    foreach ($config->get("servers.available") as $serverData) $player->transferServer($serverData['server.name']);
+                    foreach ($config->get("servers.available") as $serverData) {
+                        if ($data == $serverData['server.name']) {
+                            $player->transferServer($serverData['server.name']);
+                        }
+                    }
                 } catch (Exception $ex) {
                     $player->sendMessage(PREFIX . TextUtils::replaceColor("{red}Could not connect to this server!"));
                     if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
@@ -54,7 +58,7 @@ final class UHCSelectorForm
         $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
 
         try {
-            foreach ($config->get("servers.available") as $serverData) if ($serverData['category'] === "uhc") $form->addButton("§6{$serverData['server.name']}" . "\n" . ServerManager::getServer($serverData['server.name'])->getStatus(), $serverData['image.type'], $serverData['image.link'], $serverData['server.name']);
+            foreach ($config->get("servers.available") as $serverData) if ($serverData['category'] === "uhc") $form->addButton("§6{$serverData['server.name']}" . "\n" . ServerManager::getStatus($serverData['server.name']), $serverData['image.type'], $serverData['image.link'], $serverData['server.name']);
         } catch (Exception $ex) {
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }

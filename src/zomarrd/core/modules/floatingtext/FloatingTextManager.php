@@ -42,7 +42,7 @@ final class FloatingTextManager extends FloatingText
     {
         $this->setPlayer($player);
 
-        foreach (["hcf", "practice"] as $npc) $this->loadNpcText($npc);
+        foreach (["hcf", "practice", "uhc"] as $npc) $this->loadNpcText($npc);
         $this->loadTextLobby();
     }
 
@@ -69,6 +69,15 @@ final class FloatingTextManager extends FloatingText
 
                     $text = $this->create(new Vector3((float)self::getNpcPosition($name, "X"), (float)self::getNpcPosition($name, "Y") + 2.50, (float)self::getNpcPosition($name, "Z")));
                     $this->send($text, $player, "§k§6!!§r §6COMING SOON §k§6!!");
+                }
+                break;
+            case "uhc":
+                if (self::getNpcPosition($name, "X") !== null) {
+                    $text = $this->create(new Vector3((float)self::getNpcPosition($name, "X"), (float)self::getNpcPosition($name, "Y") + 2.15, (float)self::getNpcPosition($name, "Z")));
+                    $this->send($text, $player, "§l§6G§fN: §r§6UHC GAMES");
+
+                    $text = $this->create(new Vector3((float)self::getNpcPosition($name, "X"), (float)self::getNpcPosition($name, "Y") + 2.50, (float)self::getNpcPosition($name, "Z")));
+                    $this->send($text, $player, "§k§6!!§r §bNEW RELEASE §k§6!!");
                 }
                 break;
             default:

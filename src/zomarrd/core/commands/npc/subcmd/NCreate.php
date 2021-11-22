@@ -30,7 +30,7 @@ final class NCreate implements ISubCommand
         if (!$player instanceof NetworkPlayer) return;
 
         if (!isset($args[0])) {
-            $player->sendMessage(PREFIX . "§cUse: §7/npc create <string:npcServer>");
+            $player->sendMessage(PREFIX . "§cUse: §7/npc create <string:server>");
             return;
         }
 
@@ -41,16 +41,11 @@ final class NCreate implements ISubCommand
 
         $npcName = $args[0];
 
-        $config = (new Network())->getResourceManager()->getArchive("network.data.yml");
-
         try {
-            foreach ($config->get("servers.available") as $serverData) {
-                if ($npcName == $serverData['npc.id']) {
-                    Human::spawn($npcName, $player);
-                    $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
-                } else $player->sendMessage(PREFIX . "§cNpc id not found");
-                return;
-            }
+            if ($npcName === "practice" || $npcName === "uhc" || $npcName === "hcf") {
+                Human::spawn($npcName, $player);
+                $player->sendMessage(PREFIX . "§a" . "entity $npcName has successfully spawned.");
+            } else $player->sendMessage(PREFIX . "§cNpc id not found");
         } catch (Exception $ex) {
             if ($player->isOp()) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
